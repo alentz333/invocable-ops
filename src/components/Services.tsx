@@ -1,80 +1,52 @@
-const services = [
-  {
-    icon: '🏗️',
-    title: 'Salesforce Architecture',
-    description: 'Ground-up design or optimization of your Salesforce org. Object models, permission structures, and scalable foundations that grow with you.',
-    features: ['Org design & data modeling', 'Permission architecture', 'Multi-org strategy'],
-  },
-  {
-    icon: '⚡',
-    title: 'Advanced Automations',
-    description: 'Flow-first automation that actually works. Complex business logic, approval chains, and cross-object orchestration without the technical debt.',
-    features: ['Flow development', 'Approval processes', 'Triggered automations'],
-  },
-  {
-    icon: '🔗',
-    title: 'Custom Integrations',
-    description: 'Connect your stack seamlessly. API integrations, middleware configuration, and data sync solutions that keep your systems in harmony.',
-    features: ['REST/SOAP APIs', 'Middleware setup', 'Real-time sync'],
-  },
-  {
-    icon: '🧹',
-    title: 'Data Hygiene',
-    description: 'Clean data = accurate forecasts. Deduplication, enrichment workflows, and governance frameworks that keep your data trustworthy.',
-    features: ['Deduplication', 'Enrichment flows', 'Data governance'],
-  },
-  {
-    icon: '📈',
-    title: 'GTM Playbook Builds',
-    description: 'End-to-end revenue operations playbooks. From lead routing to opportunity management to renewal workflows — systems that drive revenue.',
-    features: ['Lead routing', 'Opp management', 'Renewal workflows'],
-  },
-  {
-    icon: '🎯',
-    title: 'CPQ Implementation',
-    description: 'Salesforce CPQ done right. Complex pricing models, consumption-based billing, and quote workflows that sales teams actually use.',
-    features: ['Product configuration', 'Pricing rules', 'Quote automation'],
-  },
-];
+import { services } from '@/content/site'
 
 export default function Services() {
   return (
-    <section id="services" className="section bg-slate-950">
+    <section id="work" className="section section--dark">
       <div className="container">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            What I Do
-          </h2>
-          <p className="text-xl text-slate-400 max-w-2xl mx-auto">
-            Deep expertise across the Salesforce ecosystem, focused on 
-            revenue operations and GTM systems.
-          </p>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {services.map((service, index) => (
-            <div key={index} className="card group">
-              <div className="text-4xl mb-4">{service.icon}</div>
-              <h3 className="text-xl font-semibold text-white mb-3">
+        <p className="eyebrow">What I actually do</p>
+        <h2 className="display h2">
+          Three layers, and they only work{' '}
+          <span className="accent">in order</span>.
+        </h2>
+        <p className="lead">
+          Teams usually call about the top layer. The work almost always starts
+          at the bottom one.
+        </p>
+
+        <div className="mt-14 grid gap-5 lg:grid-cols-3">
+          {services.map((service) => (
+            <article key={service.num} className="card card--dark p-8">
+              <div className="mb-6 flex items-baseline justify-between border-b border-[var(--dark-line)] pb-5">
+                <span className="index-num">{service.num}</span>
+              </div>
+
+              <h3 className="display text-[26px] leading-tight text-white">
                 {service.title}
               </h3>
-              <p className="text-slate-400 mb-4 leading-relaxed">
-                {service.description}
+
+              <p className="mt-4 text-[15px] leading-relaxed text-[rgba(255,255,255,0.74)]">
+                {service.summary}
               </p>
-              <ul className="space-y-2">
-                {service.features.map((feature, i) => (
-                  <li key={i} className="flex items-center gap-2 text-sm text-slate-500">
-                    <svg className="w-4 h-4 text-[var(--color-accent)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    {feature}
+
+              <ul className="mt-6 space-y-3 border-t border-[var(--dark-line)] pt-6">
+                {service.points.map((point) => (
+                  <li
+                    key={point}
+                    className="flex gap-3 text-[14.5px] leading-relaxed text-[rgba(255,255,255,0.8)]"
+                  >
+                    <span
+                      aria-hidden
+                      className="mt-[9px] h-[5px] w-[5px] shrink-0 rounded-full bg-[#e8845c]"
+                    />
+                    {point}
                   </li>
                 ))}
               </ul>
-            </div>
+            </article>
           ))}
         </div>
       </div>
     </section>
-  );
+  )
 }

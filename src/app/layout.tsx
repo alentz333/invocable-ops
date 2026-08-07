@@ -1,30 +1,56 @@
-import type { Metadata } from "next";
-import "./globals.css";
+import type { Metadata } from 'next'
+import { IBM_Plex_Sans, Instrument_Serif } from 'next/font/google'
+import { site } from '@/content/site'
+import './globals.css'
+
+const plex = IBM_Plex_Sans({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-plex',
+  display: 'swap',
+})
+
+const instrument = Instrument_Serif({
+  subsets: ['latin'],
+  weight: '400',
+  style: ['normal', 'italic'],
+  variable: '--font-instrument',
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
-  title: "Invocable Ops | Salesforce Architecture & GTM Systems",
-  description: "Expert Salesforce architecture, advanced automations, and GTM playbook builds for startups and mid-market SaaS companies.",
-  keywords: ["Salesforce", "CPQ", "GTM", "Revenue Operations", "SaaS", "Consulting"],
-};
+  metadataBase: new URL(site.url),
+  title: 'Invocable Ops | AI-native GTM systems',
+  description:
+    'An independent GTM systems practice for B2B SaaS. Salesforce, Outreach, HubSpot, Marketo, Apollo, and Clay — architected so enrichment, routing, and follow-up run on their own.',
+  keywords: [
+    'GTM systems',
+    'revenue operations',
+    'Salesforce Sales Cloud',
+    'Outreach.io',
+    'HubSpot',
+    'Marketo',
+    'Apollo',
+    'Clay',
+    'AI GTM',
+    'RevOps consultant',
+  ],
+  openGraph: {
+    title: 'Invocable Ops | AI-native GTM systems',
+    description:
+      'An independent GTM systems practice for B2B SaaS. One operator, no handoffs.',
+    url: site.url,
+    siteName: site.name,
+    type: 'website',
+  },
+}
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-          rel="stylesheet"
-        />
-      </head>
-      <body className="antialiased">
-        {children}
-      </body>
+    <html lang="en" className={`${plex.variable} ${instrument.variable}`}>
+      <body>{children}</body>
     </html>
-  );
+  )
 }
