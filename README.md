@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Invocable Ops
 
-## Getting Started
+Marketing site for **Invocable Ops** — an independent GTM systems practice for B2B SaaS, specializing in AI-native revenue systems across Salesforce Sales Cloud, Outreach, HubSpot, Marketo, Apollo, and Clay.
 
-First, run the development server:
+Live at **[invocableops.com](https://invocableops.com)**.
+
+## Stack
+
+- **Next.js 16** (App Router) + React 19 + TypeScript
+- **Tailwind CSS 4** (via `@tailwindcss/postcss`) layered over a hand-rolled design system in `src/app/globals.css`
+- **Fonts:** Instrument Serif (display) + IBM Plex Sans (UI/body), self-hosted through `next/font/google`
+- Contact form posts to a Route Handler that relays through **Resend**
+
+## Running locally
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev     # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+```bash
+npm run build   # production build
+npm run lint    # eslint
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Design system
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Tokens live at the top of `src/app/globals.css`: warm paper canvas (`#F5F3EE`), midnight ink (`#1A1F2B`), rust accent (`#B4441F`), 18px radii.
 
-## Learn More
+Component classes (`.btn`, `.card`, `.section`, `.display`, `.eyebrow`) are defined inside `@layer components` **on purpose** — Tailwind v4 emits utilities into `@layer utilities`, and unlayered CSS would beat them in the cascade, silently breaking things like `md:hidden` on a `.btn`.
 
-To learn more about Next.js, take a look at the following resources:
+## Editing content
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+All copy lives in **`src/content/site.ts`** — there are no hardcoded strings in the components. Edit that one file to change headlines, services, platforms, engagement models, stats, or contact details.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Placeholders awaiting real values are marked with `TODO` comments in that file.
 
-## Deploy on Vercel
+## Environment variables
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The contact form works without configuration in development — submissions are logged server-side and the form reports success. To actually deliver mail:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Variable | Purpose |
+|---|---|
+| `RESEND_API_KEY` | Resend API key. Without it, submissions are logged only. |
+| `CONTACT_FROM` | Verified sender, e.g. `Invocable Ops <hello@invocableops.com>` |
+
+Set both in the Vercel project settings for production.
+
+## Structure
+
+```
+src/
+├── app/
+│   ├── layout.tsx           # fonts, metadata
+│   ├── page.tsx             # section composition
+│   ├── globals.css          # design tokens + component layer
+│   └── api/contact/route.ts # form handler (Resend)
+├── components/              # one file per section
+└── content/site.ts          # ALL copy and config
+```
