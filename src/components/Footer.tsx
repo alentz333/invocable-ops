@@ -1,4 +1,5 @@
 import { nav, site } from '@/content/site'
+import Logo from './Logo'
 
 export default function Footer() {
   return (
@@ -6,16 +7,8 @@ export default function Footer() {
       <div className="container">
         <div className="flex flex-col gap-10 md:flex-row md:items-start md:justify-between">
           <div>
-            <div className="flex items-center gap-2.5">
-              <span
-                aria-hidden
-                className="h-[9px] w-[9px] rounded-full bg-[var(--rust)]"
-              />
-              <span className="font-display text-[21px] leading-none text-[var(--ink)]">
-                {site.name}
-              </span>
-            </div>
-            <p className="mt-3 max-w-[36ch] text-[14px] text-[var(--steel)]">
+            <Logo size="lg" />
+            <p className="mt-4 max-w-[36ch] text-[14px] text-[var(--steel)]">
               An independent GTM systems practice for B2B SaaS.
             </p>
           </div>

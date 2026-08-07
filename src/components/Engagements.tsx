@@ -17,14 +17,16 @@ export default function Engagements() {
         <div className="mt-14 grid gap-5 md:grid-cols-2">
           {engagements.map((item) => (
             <article key={item.num} className="card card--flat flex flex-col p-9">
-              <div className="flex flex-col gap-2 border-b border-[var(--line)] pb-5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
+              <div className="flex flex-col gap-2 border-b border-[var(--line)] pb-5 lg:flex-row lg:items-baseline lg:justify-between lg:gap-5">
                 <div className="flex items-baseline gap-4">
                   <span className="index-num">{item.num}</span>
                   <h3 className="display text-[28px] text-[var(--ink)]">
                     {item.title}
                   </h3>
                 </div>
-                <span className="pl-9 text-[12px] font-medium uppercase tracking-[0.1em] text-[var(--steel)] sm:shrink-0 sm:pl-0 sm:text-right">
+                {/* No shrink-0: a long label must wrap rather than push the
+                    card past the viewport. */}
+                <span className="min-w-0 pl-9 text-[12px] font-medium uppercase tracking-[0.1em] text-[var(--steel)] lg:pl-0 lg:text-right">
                   {item.duration}
                 </span>
               </div>

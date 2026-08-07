@@ -1,17 +1,12 @@
-import { nav, site } from '@/content/site'
+import { nav } from '@/content/site'
+import Logo from './Logo'
 
 export default function Nav() {
   return (
     <header className="sticky top-0 z-50 border-b border-[var(--line)] bg-[color-mix(in_srgb,var(--canvas)_88%,transparent)] backdrop-blur-md">
-      <div className="container flex h-[72px] items-center justify-between gap-6">
-        <a href="#top" className="flex items-center gap-2.5">
-          <span
-            aria-hidden
-            className="h-[9px] w-[9px] rounded-full bg-[var(--rust)]"
-          />
-          <span className="font-display text-[21px] leading-none text-[var(--ink)]">
-            {site.name}
-          </span>
+      <div className="container flex h-[84px] items-center justify-between gap-6">
+        <a href="#top" aria-label="Invocable Ops — home">
+          <Logo />
         </a>
 
         <nav className="hidden items-center gap-8 md:flex">
@@ -25,12 +20,12 @@ export default function Nav() {
             </a>
           ))}
           <a href="#contact" className="btn btn--primary btn--small">
-            Start a conversation
+            Let&apos;s talk
           </a>
         </nav>
 
         <a href="#contact" className="btn btn--primary btn--small md:hidden">
-          Get in touch
+          Let&apos;s talk
         </a>
       </div>
     </header>

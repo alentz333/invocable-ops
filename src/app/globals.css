@@ -411,4 +411,9 @@
   .card:hover {
     transform: none;
   }
+
+  /* SMIL animations ignore the media query, so hide the flow dots outright. */
+  .flow-dot {
+    display: none;
+  }
 }

@@ -31,7 +31,6 @@ export const nav = [
 /* ---------------------------------------------------------------- */
 
 export const hero = {
-  eyebrow: 'Independent GTM systems practice',
   lead: "I design and build the revenue systems behind B2B SaaS go-to-market — Salesforce, Outreach, HubSpot, Marketo, Apollo, Clay — so that enrichment, routing, research, and follow-up run on their own instead of on someone's calendar reminder.",
   note: 'One operator. No handoffs, no junior consultants, no six-figure SI contract.',
 }
@@ -110,14 +109,6 @@ export const about = {
     "I'm Alex Lentz. I currently lead GTM Systems at a venture-backed observability company, where I own the stack end to end for Sales, Marketing, Customer Success, and Professional Services — the same function I'm hired into as a consultant.",
     'That matters more than it sounds. Most people selling GTM systems work have sold the tools or implemented them on someone else\'s timeline. I run this function from the inside, which means I know which "best practice" survives a real quarter-end and which one falls over the first time a rep is in a hurry.',
     'Invocable Ops is the practice I run alongside that: senior systems work for teams who need the depth without an enterprise consulting contract wrapped around it. You work with me directly, start to finish.',
-  ],
-
-  // TODO: confirm or replace. These came off the previous build and need to be
-  // numbers you can defend in a sales conversation.
-  stats: [
-    { value: '10+', label: 'Years in GTM systems' },
-    { value: '50+', label: 'Salesforce builds shipped' },
-    { value: '1', label: 'Person you actually talk to' },
   ],
 }
 

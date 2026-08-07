@@ -23,21 +23,6 @@ export default function About() {
               ))}
             </div>
 
-            <dl className="mt-12 grid grid-cols-3 gap-8 border-t border-[var(--line)] pt-10">
-              {about.stats.map((stat) => (
-                <div key={stat.label}>
-                  <dt className="sr-only">{stat.label}</dt>
-                  <dd>
-                    <span className="block font-display text-[42px] leading-none text-[var(--ink)]">
-                      {stat.value}
-                    </span>
-                    <span className="mt-2 block text-[13px] leading-snug text-[var(--steel)]">
-                      {stat.label}
-                    </span>
-                  </dd>
-                </div>
-              ))}
-            </dl>
           </div>
 
           <div className="lg:pt-24">
