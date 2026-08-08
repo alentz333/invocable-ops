@@ -1,3 +1,5 @@
+import type { GlyphName } from '@/components/Icons'
+
 /**
  * Single source of truth for site content.
  *
@@ -7,7 +9,6 @@
 
 export const site = {
   name: 'Invocable Ops',
-  tagline: 'AI-native GTM systems',
 
   // TODO: confirm this is the inbox you actually want mail delivered to.
   email: 'hello@invocableops.com',
@@ -35,7 +36,28 @@ export const hero = {
   note: 'One operator. No handoffs, no junior consultants, no six-figure SI contract.',
 }
 
-/* The concept section — plays the role of TOP's "operating point" definition. */
+/**
+ * The Path. Five stages every inbound lead moves through, shown twice:
+ * how it runs in a stack nobody owns, and how it runs after the rebuild.
+ * Deliberately no numbers — these are illustrative states, not results.
+ */
+export type StageState = 'done' | 'stalled' | 'open'
+
+export const lifecycle = {
+  stages: ['Captured', 'Enriched', 'Scored', 'Routed', 'Worked'] as const,
+  before: {
+    label: 'Typical stack',
+    states: ['done', 'done', 'stalled', 'open', 'open'] as StageState[],
+    note: 'Stalls at scoring. Nobody owns the gap, so the lead ages.',
+  },
+  after: {
+    label: 'After the rebuild',
+    states: ['done', 'done', 'done', 'done', 'done'] as StageState[],
+    note: 'Every stage owned, instrumented, and reportable.',
+  },
+}
+
+/* The concept section — where the practice's name comes from. */
 export const definition = {
   word: 'in·vo·ca·ble',
   pronunciation: '/inˈvōkəbəl/',
@@ -47,28 +69,26 @@ export const definition = {
   ],
 }
 
-/* ---------------------------------------------------------------- */
+/* ----------------------------------------------------------------
+   Three layers, ordered by dependency: each one needs the one
+   before it. The numbering is load-bearing, not decoration.
+   ---------------------------------------------------------------- */
 
-export const services = [
+export const layers: {
+  num: string
+  title: string
+  glyph: GlyphName
+  color: string
+  summary: string
+  points: string[]
+}[] = [
   {
     num: '01',
-    title: 'AI-native pipeline systems',
-    summary:
-      'The part most teams are trying to figure out right now: where AI actually belongs in the funnel, and where it quietly makes things worse.',
-    // TODO: replace these with the real things you've built. This is the section
-    // that decides whether the site reads as credible or as vapor.
-    points: [
-      'Enrichment waterfalls that resolve an account once and write back clean',
-      'LLM scoring of inbound against a real ICP definition, not a keyword list',
-      'Research and account briefs generated before the rep opens the record',
-      'Automated data hygiene that holds the model together as volume grows',
-    ],
-  },
-  {
-    num: '02',
     title: 'Revenue architecture',
+    glyph: 'foundation',
+    color: '#3F4A6B',
     summary:
-      'The data model and reporting layer underneath everything else. Unglamorous, and the reason the other two work.',
+      'The data model and reporting layer underneath everything else. Unglamorous, and the reason the other two hold.',
     points: [
       'Salesforce object and lifecycle design that survives the next reorg',
       'Lead-to-opportunity flow: capture, dedupe, route, attribute',
@@ -77,10 +97,28 @@ export const services = [
     ],
   },
   {
+    num: '02',
+    title: 'AI-native pipeline systems',
+    glyph: 'resolve',
+    color: '#2F35D4',
+    summary:
+      'Where AI actually belongs in the funnel — and where it quietly makes things worse.',
+    // TODO: replace these with the real things you've built. This is the
+    // section that decides whether the site reads as credible or as vapor.
+    points: [
+      'Enrichment waterfalls that resolve an account once and write back clean',
+      'LLM scoring of inbound against a real ICP definition, not a keyword list',
+      'Research and account briefs generated before the rep opens the record',
+      'Automated data hygiene that holds the model together as volume grows',
+    ],
+  },
+  {
     num: '03',
     title: 'Outbound & lifecycle engines',
+    glyph: 'dispatch',
+    color: '#0E7C86',
     summary:
-      'The execution layer — sequencing, nurture, and handoffs wired so no one is copying fields between tabs.',
+      'The execution layer — sequencing, nurture, and handoffs wired so nobody is copying fields between tabs.',
     points: [
       'Outreach and Apollo sequence architecture tied to CRM state',
       'Marketo and HubSpot lifecycle stages that mean one specific thing',
@@ -88,18 +126,53 @@ export const services = [
       'Attribution that survives contact with a real buying committee',
     ],
   },
-] as const
+]
 
 /* ---------------------------------------------------------------- */
 
-export const platforms = [
-  { name: 'Salesforce', detail: 'Sales Cloud — data model, automation, forecasting, reporting' },
-  { name: 'Outreach', detail: 'Sequence architecture, CRM sync, rep workflow' },
-  { name: 'HubSpot', detail: 'Marketing Hub and CRM, lifecycle and lead flow' },
-  { name: 'Marketo', detail: 'Program design, scoring, nurture, sync hygiene' },
-  { name: 'Apollo', detail: 'Prospecting, data, and outbound execution' },
-  { name: 'Clay', detail: 'Enrichment waterfalls, research agents, CRM write-back' },
-] as const
+export const platforms: {
+  name: string
+  detail: string
+  glyph: GlyphName
+  color: string
+}[] = [
+  {
+    name: 'Salesforce',
+    detail: 'Sales Cloud — data model, automation, forecasting, reporting',
+    glyph: 'cloud',
+    color: '#2F35D4',
+  },
+  {
+    name: 'Outreach',
+    detail: 'Sequence architecture, CRM sync, rep workflow',
+    glyph: 'cadence',
+    color: '#0E7C86',
+  },
+  {
+    name: 'HubSpot',
+    detail: 'Marketing Hub and CRM, lifecycle and lead flow',
+    glyph: 'sync',
+    color: '#C7761A',
+  },
+  {
+    name: 'Marketo',
+    detail: 'Program design, scoring, nurture, sync hygiene',
+    glyph: 'funnel',
+    color: '#7A3EA1',
+  },
+  {
+    name: 'Apollo',
+    detail: 'Prospecting, data, and outbound execution',
+    glyph: 'target',
+    color: '#0B8A63',
+  },
+  {
+    name: 'Clay',
+    detail: 'Enrichment waterfalls, research agents, CRM write-back',
+    glyph: 'waterfall',
+    color: '#3F4A6B',
+  },
+]
 
 /* ---------------------------------------------------------------- */
 
@@ -111,41 +184,6 @@ export const about = {
     'Invocable Ops is the practice I run alongside that: senior systems work for teams who need the depth without an enterprise consulting contract wrapped around it. You work with me directly, start to finish.',
   ],
 }
-
-/* ---------------------------------------------------------------- */
-
-export const engagements = [
-  {
-    num: '01',
-    title: 'Audit',
-    duration: 'TODO: e.g. 2 weeks, fixed fee',
-    body: 'I map what you have — objects, automations, integrations, where the data actually breaks — and hand back a prioritized list of what to fix, in what order, and what it buys you. Yours to keep whether or not we work together after.',
-    best: 'Best when you suspect something is wrong but can\'t name it.',
-  },
-  {
-    num: '02',
-    title: 'Build sprint',
-    duration: 'TODO: e.g. 4–8 weeks, scoped per project',
-    body: 'A defined build with a start and an end. Rebuild lead routing. Stand up Clay-to-Salesforce enrichment. Migrate Marketo to HubSpot without losing attribution history. Scoped up front, documented on delivery.',
-    best: 'Best when you know exactly what needs to exist.',
-  },
-  {
-    num: '03',
-    title: 'Fractional GTM systems lead',
-    duration: 'TODO: e.g. monthly retainer',
-    body: "I'm the systems owner for a team that doesn't have one yet. Roadmap, builds, vendor decisions, and the judgment calls in between — at the fraction of the week the problem actually requires.",
-    best: 'Best when the work is ongoing and nobody senior owns it.',
-  },
-  {
-    num: '04',
-    title: 'Enablement',
-    duration: 'TODO: e.g. per engagement',
-    body: 'Teaching your admin or first ops hire to run what exists — the architecture, the reasoning behind it, and the failure modes to watch. The goal is that you stop needing me.',
-    best: 'Best when you have the headcount but not the depth.',
-  },
-] as const
-
-/* ---------------------------------------------------------------- */
 
 export const why = [
   {
@@ -162,7 +200,51 @@ export const why = [
   },
 ] as const
 
+/* ---------------------------------------------------------------- */
+
+export const engagements: {
+  title: string
+  terms: string
+  glyph: GlyphName
+  color: string
+  body: string
+  best: string
+}[] = [
+  {
+    title: 'Audit',
+    terms: 'TODO: e.g. 2 weeks, fixed fee',
+    glyph: 'target',
+    color: '#3F4A6B',
+    body: 'I map what you have — objects, automations, integrations, where the data actually breaks — and hand back a prioritized list of what to fix, in what order, and what it buys you. Yours to keep whether or not we work together after.',
+    best: 'Best when you suspect something is wrong but can’t name it.',
+  },
+  {
+    title: 'Build sprint',
+    terms: 'TODO: e.g. 4–8 weeks, scoped per project',
+    glyph: 'foundation',
+    color: '#2F35D4',
+    body: 'A defined build with a start and an end. Rebuild lead routing. Stand up Clay-to-Salesforce enrichment. Migrate Marketo to HubSpot without losing attribution history. Scoped up front, documented on delivery.',
+    best: 'Best when you know exactly what needs to exist.',
+  },
+  {
+    title: 'Fractional systems lead',
+    terms: 'TODO: e.g. monthly retainer',
+    glyph: 'hub',
+    color: '#0E7C86',
+    body: "I'm the systems owner for a team that doesn't have one yet. Roadmap, builds, vendor decisions, and the judgment calls in between — at the fraction of the week the problem actually requires.",
+    best: 'Best when the work is ongoing and nobody senior owns it.',
+  },
+  {
+    title: 'Enablement',
+    terms: 'TODO: e.g. per engagement',
+    glyph: 'resolve',
+    color: '#C7761A',
+    body: 'Teaching your admin or first ops hire to run what exists — the architecture, the reasoning behind it, and the failure modes to watch. The goal is that you stop needing me.',
+    best: 'Best when you have the headcount but not the depth.',
+  },
+]
+
 export const contact = {
-  heading: 'Know what\'s slowing revenue down?',
-  lead: "Tell me what's broken, or book thirty minutes and we'll figure out whether I'm the right person for it. Either way you'll get a straight answer.",
+  heading: "Know what's slowing revenue down?",
+  lede: "Tell me what's broken, or book thirty minutes and we'll figure out whether I'm the right person for it. Either way you'll get a straight answer.",
 }

@@ -2,6 +2,8 @@
 
 import { useState } from 'react'
 import { contact, site } from '@/content/site'
+import { Panel } from './Panel'
+import { IconCheck } from './Icons'
 
 type Status = 'idle' | 'sending' | 'sent' | 'error'
 
@@ -34,142 +36,138 @@ export default function Contact() {
   }
 
   return (
-    <section id="contact" className="section section--dark">
-      <div className="container">
-        <div className="grid gap-16 lg:grid-cols-[0.95fr_1.05fr]">
+    <section id="contact" className="band band--chrome on-chrome">
+      <div className="shell">
+        <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr]">
           <div>
-            <p className="eyebrow">Contact</p>
-            <h2 className="display h2">{contact.heading}</h2>
-            <p className="lead">{contact.lead}</p>
+            <p className="label mb-4">Contact</p>
+            <h2 className="display display-lg">{contact.heading}</h2>
+            <p className="lede">{contact.lede}</p>
 
-            <div className="mt-10 border-t border-[var(--dark-line)] pt-8">
-              <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-[rgba(255,255,255,0.5)]">
-                Rather just talk
-              </p>
+            <div className="mt-9 border-t border-[var(--line-dark)] pt-7">
+              <p className="label">Rather just talk</p>
               <a
                 href={site.calendarUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="btn btn--outline-light mt-5"
+                className="btn btn--ghost-light mt-4"
               >
                 Book 30 minutes →
               </a>
-              <p className="mt-6 text-[15px] text-[rgba(255,255,255,0.6)]">
+              <p className="mt-5 text-[14px] text-white/60">
                 Or email{' '}
-                <a
-                  href={`mailto:${site.email}`}
-                  className="text-white underline decoration-[rgba(255,255,255,0.3)] underline-offset-4 transition-colors hover:decoration-[#e8845c]"
-                >
+                <a href={`mailto:${site.email}`} className="link">
                   {site.email}
                 </a>
               </p>
             </div>
           </div>
 
-          <div className="card p-9">
-            {status === 'sent' ? (
-              <div className="flex min-h-[420px] flex-col justify-center text-center">
-                <span
-                  aria-hidden
-                  className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[var(--rust-soft)] font-display text-[22px] text-[var(--rust)]"
-                >
-                  ✓
-                </span>
-                <h3 className="display mt-6 text-[28px] text-[var(--ink)]">
-                  Got it.
-                </h3>
-                <p className="mx-auto mt-3 max-w-[36ch] text-[15px] text-[var(--steel)]">
-                  I read everything that comes through here and reply within a
-                  business day.
-                </p>
-              </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="space-y-5">
-                <div className="grid gap-5 sm:grid-cols-2">
+          <Panel>
+            <div className="panel__body p-6 sm:p-7">
+              {status === 'sent' ? (
+                <div className="flex min-h-[380px] flex-col items-center justify-center text-center">
+                  <span
+                    className="tile"
+                    style={{ background: 'var(--jade)', width: 40, height: 40 }}
+                    aria-hidden
+                  >
+                    <IconCheck size={19} />
+                  </span>
+                  <h3 className="display display-md mt-5">Got it</h3>
+                  <p className="mt-2 max-w-[34ch] text-[14.5px] text-[var(--muted)]">
+                    I read everything that comes through here and reply within a
+                    business day.
+                  </p>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <div>
+                      <label className="label mb-1.5 block" htmlFor="name">
+                        Name
+                      </label>
+                      <input
+                        className="input"
+                        id="name"
+                        name="name"
+                        required
+                        autoComplete="name"
+                      />
+                    </div>
+                    <div>
+                      <label className="label mb-1.5 block" htmlFor="company">
+                        Company
+                      </label>
+                      <input
+                        className="input"
+                        id="company"
+                        name="company"
+                        autoComplete="organization"
+                      />
+                    </div>
+                  </div>
+
                   <div>
-                    <label className="field-label" htmlFor="name">
-                      Name
+                    <label className="label mb-1.5 block" htmlFor="email">
+                      Work email
                     </label>
                     <input
-                      className="field"
-                      id="name"
-                      name="name"
+                      className="input"
+                      id="email"
+                      name="email"
+                      type="email"
                       required
-                      autoComplete="name"
+                      autoComplete="email"
                     />
                   </div>
+
                   <div>
-                    <label className="field-label" htmlFor="company">
-                      Company
+                    <label className="label mb-1.5 block" htmlFor="stack">
+                      What&apos;s in your stack
                     </label>
                     <input
-                      className="field"
-                      id="company"
-                      name="company"
-                      autoComplete="organization"
+                      className="input"
+                      id="stack"
+                      name="stack"
+                      placeholder="Salesforce, Outreach, Marketo…"
                     />
                   </div>
-                </div>
 
-                <div>
-                  <label className="field-label" htmlFor="email">
-                    Work email
-                  </label>
-                  <input
-                    className="field"
-                    id="email"
-                    name="email"
-                    type="email"
-                    required
-                    autoComplete="email"
-                  />
-                </div>
+                  <div>
+                    <label className="label mb-1.5 block" htmlFor="message">
+                      What&apos;s broken
+                    </label>
+                    <textarea
+                      className="input resize-y"
+                      id="message"
+                      name="message"
+                      rows={5}
+                      required
+                      placeholder="The more specific, the more useful my first reply will be."
+                    />
+                  </div>
 
-                <div>
-                  <label className="field-label" htmlFor="stack">
-                    What&apos;s in your stack
-                  </label>
-                  <input
-                    className="field"
-                    id="stack"
-                    name="stack"
-                    placeholder="Salesforce, Outreach, Marketo…"
-                  />
-                </div>
+                  {status === 'error' && (
+                    <p className="text-[13.5px] text-[var(--amber)]">{error}</p>
+                  )}
 
-                <div>
-                  <label className="field-label" htmlFor="message">
-                    What&apos;s broken
-                  </label>
-                  <textarea
-                    className="field resize-y"
-                    id="message"
-                    name="message"
-                    rows={5}
-                    required
-                    placeholder="The more specific, the more useful my first reply will be."
-                  />
-                </div>
+                  <button
+                    type="submit"
+                    className="btn btn--primary w-full"
+                    disabled={status === 'sending'}
+                  >
+                    {status === 'sending' ? 'Sending…' : 'Send'}
+                  </button>
 
-                {status === 'error' && (
-                  <p className="text-[14px] text-[var(--rust)]">{error}</p>
-                )}
-
-                <button
-                  type="submit"
-                  className="btn btn--primary w-full"
-                  disabled={status === 'sending'}
-                >
-                  {status === 'sending' ? 'Sending…' : 'Send'}
-                </button>
-
-                <p className="text-[13px] leading-relaxed text-[var(--slate)]">
-                  No newsletter, no sequence, no CRM nurture track. It just goes
-                  to my inbox.
-                </p>
-              </form>
-            )}
-          </div>
+                  <p className="text-[12.5px] leading-relaxed text-[var(--faint)]">
+                    No newsletter, no sequence, no nurture track. It goes to my
+                    inbox.
+                  </p>
+                </form>
+              )}
+            </div>
+          </Panel>
         </div>
       </div>
     </section>

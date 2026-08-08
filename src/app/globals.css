@@ -1,66 +1,70 @@
 @import "tailwindcss";
 
 /* ============================================================
-   Invocable Ops — design system
-   Warm paper canvas, midnight ink, rust accent.
-   Display: Instrument Serif  |  UI/body: IBM Plex Sans
+   Invocable Ops — "the console"
+
+   A marketing site built with the grammar of the tool the
+   audience lives in all day: panels, object tiles, mono field
+   labels, and the stage Path. Salesforce-adjacent on purpose,
+   Salesforce-derivative nowhere.
 
    Component classes live in @layer components so Tailwind
-   utilities (which sit in @layer utilities) can override them.
-   Without the layer, unlayered CSS wins and things like
-   `md:hidden` on a .btn silently stop working.
+   utilities (in @layer utilities) can override them. Unlayered
+   CSS would win the cascade and break things like `md:hidden`.
    ============================================================ */
 
 @theme {
-  --font-sans: var(--font-plex), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --font-display: var(--font-instrument), Georgia, "Times New Roman", serif;
-}
+  --font-sans: var(--font-archivo), system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, monospace;
 
-@theme {
-  /* Surfaces */
-  --color-canvas: #f5f3ee;
-  --color-paper: #fffdf8;
-  --color-midnight: #1a1f2b;
-
-  /* Ink */
-  --color-ink: #1a1f2b;
-  --color-graphite: #2f3744;
-  --color-steel: #6b7684;
-  --color-slate: #8c98a5;
-  --color-stone: #d9d4cc;
-
-  /* Accent */
-  --color-rust: #b4441f;
-  --color-rust-dark: #96371a;
-  --color-ember: #e8845c;
+  --color-canvas: #ebeef5;
+  --color-panel: #ffffff;
+  --color-ink: #0e1120;
+  --color-muted: #59617d;
+  --color-line: #d3d9e6;
+  --color-primary: #2f35d4;
+  --color-jade: #0b8a63;
+  --color-amber: #c7761a;
 }
 
 :root {
-  --canvas: #f5f3ee;
-  --paper: #fffdf8;
-  --midnight: #1a1f2b;
-  --midnight-deep: #11151f;
+  /* Surfaces */
+  --canvas: #ebeef5;
+  --panel: #ffffff;
+  --panel-alt: #f6f8fc;
+  --chrome: #0e1120;
+  --chrome-hi: #1b2033;
 
-  --ink: #1a1f2b;
-  --graphite: #2f3744;
-  --steel: #6b7684;
-  --slate: #8c98a5;
-  --stone: #d9d4cc;
+  /* Ink */
+  --ink: #0e1120;
+  --body: #333b55;
+  --muted: #59617d;
+  --faint: #8a92ab;
 
-  --rust: #b4441f;
-  --rust-dark: #96371a;
-  --rust-soft: rgba(180, 68, 31, 0.12);
-  --ember: #e8845c;
+  /* Lines */
+  --line: #d3d9e6;
+  --line-soft: #e3e8f1;
+  --line-dark: rgba(255, 255, 255, 0.14);
 
-  --line: rgba(47, 55, 68, 0.16);
-  --line-strong: rgba(47, 55, 68, 0.32);
-  --dark-line: rgba(255, 255, 255, 0.16);
-  --shadow: 0 24px 70px rgba(17, 21, 31, 0.14);
-  --shadow-sm: 0 12px 34px rgba(17, 21, 31, 0.09);
+  /* Accent + states */
+  --primary: #2f35d4;
+  --primary-dark: #242aad;
+  --primary-wash: #eef0fe;
+  --jade: #0b8a63;
+  --jade-wash: #e6f5ef;
+  --amber: #c7761a;
+  --amber-wash: #fdf2e3;
 
-  --radius: 18px;
-  --radius-sm: 12px;
-  --max: 1180px;
+  /* Depth */
+  --shadow-sm: 0 1px 2px rgba(14, 17, 32, 0.06);
+  --shadow: 0 2px 6px rgba(14, 17, 32, 0.08), 0 1px 2px rgba(14, 17, 32, 0.05);
+  --shadow-lg: 0 12px 28px rgba(14, 17, 32, 0.1);
+
+  /* Geometry — deliberately tight. SLDS is not a pillowy UI. */
+  --radius: 6px;
+  --radius-sm: 4px;
+  --radius-tile: 7px;
+  --max: 1200px;
 }
 
 @layer base {
@@ -75,128 +79,198 @@
   body {
     margin: 0;
     background: var(--canvas);
-    color: var(--graphite);
+    color: var(--body);
     font-family: var(--font-sans);
-    font-size: 16px;
-    line-height: 1.65;
-    text-rendering: optimizeLegibility;
+    font-size: 15px;
+    line-height: 1.6;
     -webkit-font-smoothing: antialiased;
   }
 
   ::selection {
-    background: var(--rust);
+    background: var(--primary);
     color: #fff;
   }
 
-  /* Keep anchor targets clear of the sticky header. */
-  section[id] {
-    scroll-margin-top: 88px;
-  }
-
   :focus-visible {
-    outline: 2px solid var(--rust);
-    outline-offset: 3px;
-    border-radius: 4px;
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
   }
 
-  .section--dark :focus-visible {
-    outline-color: var(--ember);
+  .on-chrome :focus-visible {
+    outline-color: #8f94ff;
+  }
+
+  section[id] {
+    scroll-margin-top: 76px;
   }
 }
 
 @layer components {
-  /* ---------- Layout primitives ---------- */
+  /* ---------- Layout ---------- */
 
-  .container {
+  .shell {
     width: 100%;
     max-width: var(--max);
     margin: 0 auto;
-    padding: 0 24px;
+    padding: 0 20px;
   }
 
-  .section {
-    padding: 92px 0;
+  .band {
+    padding: 76px 0;
   }
 
-  .section--tight {
-    padding: 66px 0;
+  .band--tight {
+    padding: 52px 0;
   }
 
-  .section--dark {
-    background: var(--midnight);
+  .band--chrome {
+    background: var(--chrome);
     color: #fff;
   }
 
-  .section--paper {
-    background: var(--paper);
+  .band--alt {
+    background: var(--panel-alt);
   }
 
-  /* ---------- Type ---------- */
-
-  .eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--rust);
-    margin: 0 0 20px;
-  }
-
-  .eyebrow::before {
-    content: "";
-    width: 28px;
-    height: 1px;
-    background: currentColor;
-  }
-
-  .section--dark .eyebrow {
-    color: var(--ember);
-  }
+  /* ---------- Type ----------
+     Archivo's width axis is the personality here: headlines run
+     expanded and uppercase, like the label on an instrument. */
 
   .display {
-    font-family: var(--font-display);
-    font-weight: 400;
-    letter-spacing: -0.015em;
-    line-height: 1.08;
+    font-family: var(--font-sans);
+    font-variation-settings: "wdth" 116;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: -0.005em;
+    line-height: 1.03;
     margin: 0;
+    color: var(--ink);
+    text-wrap: balance;
+  }
+
+  .band--chrome .display,
+  .display--invert {
+    color: #fff;
+  }
+
+  .display-xl {
+    font-size: clamp(33px, 3.9vw, 52px);
+  }
+
+  .display-lg {
+    font-size: clamp(25px, 2.7vw, 36px);
+  }
+
+  .display-md {
+    font-size: clamp(19px, 1.7vw, 23px);
+    line-height: 1.12;
+  }
+
+  .accent {
+    color: var(--primary);
+  }
+
+  .band--chrome .accent {
+    color: #9aa0ff;
+  }
+
+  .lede {
+    font-size: clamp(16px, 1.2vw, 18px);
+    line-height: 1.62;
+    color: var(--muted);
+    max-width: 60ch;
+    margin: 18px 0 0;
+  }
+
+  .band--chrome .lede {
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  /* Mono utility label — the "field label" voice throughout. */
+  .label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0;
+  }
+
+  .label--accent {
+    color: var(--primary);
+  }
+
+  .band--chrome .label {
+    color: rgba(255, 255, 255, 0.55);
+  }
+
+  /* ---------- Panel ---------- */
+
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .panel__head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 16px;
+    border-bottom: 1px solid var(--line-soft);
+  }
+
+  .panel__body {
+    padding: 20px 16px;
+  }
+
+  .panel--chrome {
+    background: var(--chrome-hi);
+    border-color: var(--line-dark);
+    box-shadow: none;
+  }
+
+  .panel--chrome .panel__head {
+    border-bottom-color: var(--line-dark);
+  }
+
+  /* A light panel nested inside a dark band is still a light surface.
+     Without this the .band--chrome text rules leak in and render the
+     contact form's labels and headings white-on-white. */
+  .band--chrome .panel:not(.panel--chrome) .display {
     color: var(--ink);
   }
 
-  .section--dark .display {
+  .band--chrome .panel:not(.panel--chrome) .label {
+    color: var(--muted);
+  }
+
+  .band--chrome .panel:not(.panel--chrome) .link {
+    color: var(--primary);
+  }
+
+  /* ---------- Object tile ----------
+     The rounded-square icon chip. Colour-coded per record type,
+     the way a CRM colour-codes Lead vs Account vs Opportunity. */
+
+  .tile {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    flex: none;
+    border-radius: var(--radius-tile);
     color: #fff;
+    background: var(--primary);
   }
 
-  .display .accent {
-    color: var(--rust);
-    font-style: italic;
-  }
-
-  .section--dark .display .accent {
-    color: var(--ember);
-  }
-
-  .h1 {
-    font-size: clamp(44px, 5.6vw, 76px);
-    max-width: 16ch;
-  }
-
-  .h2 {
-    font-size: clamp(34px, 4.2vw, 54px);
-    max-width: 20ch;
-  }
-
-  .lead {
-    font-size: clamp(17px, 1.4vw, 20px);
-    color: rgba(47, 55, 68, 0.82);
-    max-width: 62ch;
-    margin: 26px 0 0;
-  }
-
-  .section--dark .lead {
-    color: rgba(255, 255, 255, 0.74);
+  .tile--lg {
+    width: 38px;
+    height: 38px;
   }
 
   /* ---------- Buttons ---------- */
@@ -205,180 +279,244 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    min-height: 50px;
-    padding: 13px 26px;
-    border-radius: 999px;
+    gap: 7px;
+    min-height: 40px;
+    padding: 9px 18px;
+    border-radius: var(--radius-sm);
     border: 1px solid transparent;
+    font-family: var(--font-sans);
     font-size: 14px;
     font-weight: 600;
-    letter-spacing: 0.01em;
     cursor: pointer;
-    transition: transform 160ms ease, background 160ms ease,
-      box-shadow 160ms ease, border-color 160ms ease, color 160ms ease;
-  }
-
-  .btn:hover {
-    transform: translateY(-1px);
-  }
-
-  .btn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    transform: none;
+    transition: background 140ms ease, border-color 140ms ease,
+      color 140ms ease, box-shadow 140ms ease;
   }
 
   .btn--primary {
-    background: var(--rust);
+    background: var(--primary);
     color: #fff;
-    box-shadow: 0 14px 28px rgba(180, 68, 31, 0.24);
   }
 
   .btn--primary:hover {
-    background: var(--rust-dark);
+    background: var(--primary-dark);
   }
 
-  .btn--secondary {
+  .btn--neutral {
+    background: var(--panel);
+    color: var(--ink);
+    border-color: var(--line);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .btn--neutral:hover {
+    background: var(--panel-alt);
+    border-color: #b9c2d6;
+  }
+
+  .btn--ghost-light {
     background: transparent;
-    color: var(--graphite);
-    border-color: var(--line-strong);
-  }
-
-  .btn--secondary:hover {
-    border-color: var(--ink);
-    background: rgba(47, 55, 68, 0.04);
-  }
-
-  .btn--outline-light {
-    background: rgba(255, 255, 255, 0.03);
     color: #fff;
-    border-color: rgba(255, 255, 255, 0.34);
+    border-color: rgba(255, 255, 255, 0.28);
   }
 
-  .btn--outline-light:hover {
-    background: rgba(255, 255, 255, 0.1);
+  .btn--ghost-light:hover {
+    background: rgba(255, 255, 255, 0.09);
   }
 
-  .btn--small {
-    min-height: 42px;
-    padding: 10px 18px;
+  .btn--sm {
+    min-height: 33px;
+    padding: 6px 14px;
     font-size: 13px;
   }
 
-  /* ---------- Cards ---------- */
+  .btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
 
-  .card {
-    background: var(--paper);
+  /* ---------- The Path ----------
+     Signature element. Chevron stages, exactly the shape a
+     Salesforce user reads as "where this record actually is".
+     Stacks to a plain vertical list below `sm` rather than
+     shipping a horizontal scroller. */
+
+  .path {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .path__stage {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    background: var(--panel-alt);
     border: 1px solid var(--line);
-    border-radius: var(--radius);
-    padding: 32px;
-    box-shadow: var(--shadow-sm);
-    transition: transform 200ms ease, box-shadow 200ms ease;
+    border-radius: var(--radius-sm);
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
   }
 
-  .card:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow);
-  }
-
-  .card--dark {
-    background: rgba(255, 255, 255, 0.045);
-    border-color: var(--dark-line);
-    box-shadow: none;
+  .path__stage--done {
+    background: var(--primary);
+    border-color: var(--primary);
     color: #fff;
   }
 
-  .card--dark:hover {
-    box-shadow: none;
+  .path__stage--stalled {
+    background: var(--amber);
+    border-color: var(--amber);
+    color: #fff;
   }
 
-  .card--flat,
-  .card--flat:hover {
-    transform: none;
-    box-shadow: var(--shadow-sm);
+  @media (min-width: 640px) {
+    .path {
+      flex-direction: row;
+      gap: 2px;
+    }
+
+    .path__stage {
+      flex: 1 1 0;
+      min-width: 0;
+      justify-content: center;
+      padding: 12px 6px 12px 16px;
+      border: 0;
+      border-radius: 0;
+      clip-path: polygon(
+        0 0,
+        calc(100% - 11px) 0,
+        100% 50%,
+        calc(100% - 11px) 100%,
+        0 100%,
+        11px 50%
+      );
+    }
+
+    .path__stage:first-child {
+      border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+      clip-path: polygon(
+        0 0,
+        calc(100% - 11px) 0,
+        100% 50%,
+        calc(100% - 11px) 100%,
+        0 100%
+      );
+    }
+
+    .path__stage:last-child {
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 11px 50%);
+    }
   }
 
-  /* ---------- Numbered index ---------- */
+  .path__label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 
-  .index-num {
-    font-family: var(--font-display);
+  /* ---------- Field rows ----------
+     The record-detail read view: mono label, plain value. */
+
+  .field-row {
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line-soft);
+  }
+
+  .field-row:last-child {
+    border-bottom: 0;
+  }
+
+  .field-row__value {
+    margin: 5px 0 0;
+    color: var(--ink);
     font-size: 15px;
-    letter-spacing: 0.1em;
-    color: var(--rust);
-  }
-
-  .section--dark .index-num {
-    color: var(--ember);
   }
 
   /* ---------- Forms ---------- */
 
-  .field {
+  .input {
     width: 100%;
-    padding: 14px 16px;
-    background: var(--paper);
-    border: 1px solid var(--line-strong);
+    padding: 9px 11px;
+    background: var(--panel);
+    border: 1px solid #b9c2d6;
     border-radius: var(--radius-sm);
     color: var(--ink);
     font-family: inherit;
-    font-size: 15px;
-    transition: border-color 160ms ease, box-shadow 160ms ease;
+    font-size: 14px;
+    transition: border-color 140ms ease, box-shadow 140ms ease;
   }
 
-  .field:focus {
+  .input:focus {
     outline: none;
-    border-color: var(--rust);
-    box-shadow: 0 0 0 3px var(--rust-soft);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 1px var(--primary);
   }
 
-  .field::placeholder {
-    color: var(--slate);
+  .input::placeholder {
+    color: var(--faint);
   }
 
-  .field-label {
-    display: block;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
+  /* ---------- Misc ---------- */
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 9px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: var(--panel);
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.07em;
     text-transform: uppercase;
-    color: var(--steel);
-    margin-bottom: 8px;
+    color: var(--muted);
   }
 
-  /* ---------- Decorative ---------- */
+  .link {
+    color: var(--primary);
+    text-decoration: none;
+  }
 
-  .dot-grid {
+  .link:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .band--chrome .link {
+    color: #9aa0ff;
+  }
+
+  /* Faint engineering grid, like a canvas behind a record page. */
+  .grid-field {
     position: absolute;
     inset: 0;
-    background-image: radial-gradient(
-      rgba(180, 68, 31, 0.22) 1px,
-      transparent 1px
+    background-image: linear-gradient(var(--line-soft) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line-soft) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(
+      ellipse 90% 70% at 70% 30%,
+      #000 0%,
+      transparent 75%
     );
-    background-size: 22px 22px;
-    mask-image: linear-gradient(
-      90deg,
-      transparent 0%,
-      rgba(0, 0, 0, 0.1) 45%,
-      rgba(0, 0, 0, 0.5) 78%,
-      transparent 100%
-    );
-    pointer-events: none;
-  }
-
-  .ring {
-    position: absolute;
-    border: 1px solid rgba(180, 68, 31, 0.22);
-    border-radius: 50%;
     pointer-events: none;
   }
 }
 
 /* ---------- Motion ---------- */
 
-@keyframes rise {
+@keyframes lift {
   from {
     opacity: 0;
-    transform: translateY(14px);
+    transform: translateY(10px);
   }
   to {
     opacity: 1;
@@ -387,14 +525,14 @@
 }
 
 @layer components {
-  .rise {
-    animation: rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  .lift {
+    animation: lift 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 
-  .d1 { animation-delay: 0.08s; }
-  .d2 { animation-delay: 0.16s; }
-  .d3 { animation-delay: 0.24s; }
-  .d4 { animation-delay: 0.32s; }
+  .s1 { animation-delay: 0.06s; }
+  .s2 { animation-delay: 0.12s; }
+  .s3 { animation-delay: 0.18s; }
+  .s4 { animation-delay: 0.24s; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -405,15 +543,5 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
-  }
-
-  .btn:hover,
-  .card:hover {
-    transform: none;
-  }
-
-  /* SMIL animations ignore the media query, so hide the flow dots outright. */
-  .flow-dot {
-    display: none;
   }
 }

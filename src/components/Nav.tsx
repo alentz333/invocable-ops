@@ -1,30 +1,31 @@
 import { nav } from '@/content/site'
 import Logo from './Logo'
 
+/** Global chrome bar — the dark strip that sits above every console. */
 export default function Nav() {
   return (
-    <header className="sticky top-0 z-50 border-b border-[var(--line)] bg-[color-mix(in_srgb,var(--canvas)_88%,transparent)] backdrop-blur-md">
-      <div className="container flex h-[84px] items-center justify-between gap-6">
+    <header className="on-chrome sticky top-0 z-50 bg-[var(--chrome)]">
+      <div className="shell flex h-[56px] items-center justify-between gap-6">
         <a href="#top" aria-label="Invocable Ops — home">
-          <Logo />
+          <Logo onChrome />
         </a>
 
-        <nav className="hidden items-center gap-8 md:flex">
+        <nav className="hidden items-center gap-7 md:flex">
           {nav.map((item) => (
             <a
               key={item.href}
               href={item.href}
-              className="text-[14px] text-[var(--steel)] transition-colors hover:text-[var(--rust)]"
+              className="text-[13.5px] text-white/70 transition-colors hover:text-white"
             >
               {item.label}
             </a>
           ))}
-          <a href="#contact" className="btn btn--primary btn--small">
+          <a href="#contact" className="btn btn--primary btn--sm">
             Let&apos;s talk
           </a>
         </nav>
 
-        <a href="#contact" className="btn btn--primary btn--small md:hidden">
+        <a href="#contact" className="btn btn--primary btn--sm md:hidden">
           Let&apos;s talk
         </a>
       </div>

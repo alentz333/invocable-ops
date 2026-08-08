@@ -1,76 +1,35 @@
+import { IconHub } from './Icons'
 import { site } from '@/content/site'
 
-/**
- * Hub-and-spoke mark: four satellite systems wired into one core.
- * Kept to four nodes rather than six so it stays legible at nav size.
- */
-export function LogoMark({
-  size = 30,
-  className = '',
-  nodeFill = 'var(--canvas)',
-}: {
-  size?: number
-  className?: string
-  nodeFill?: string
-}) {
-  const satellites = [
-    [8.5, 8.5],
-    [23.5, 8.5],
-    [8.5, 23.5],
-    [23.5, 23.5],
-  ] as const
-
+/** The house mark as an object tile — the same chip a CRM puts on a record. */
+export function LogoTile({ size = 30 }: { size?: number }) {
   return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 32 32"
-      fill="none"
+    <span
+      className="tile"
+      style={{ width: size, height: size }}
       aria-hidden
-      className={className}
     >
-      {satellites.map(([x, y]) => (
-        <line
-          key={`l-${x}-${y}`}
-          x1={16}
-          y1={16}
-          x2={x}
-          y2={y}
-          stroke="currentColor"
-          strokeWidth={1.25}
-          strokeLinecap="round"
-          opacity={0.45}
-        />
-      ))}
-      {satellites.map(([x, y]) => (
-        <circle
-          key={`c-${x}-${y}`}
-          cx={x}
-          cy={y}
-          r={2.6}
-          stroke="currentColor"
-          strokeWidth={1.5}
-          fill={nodeFill}
-        />
-      ))}
-      <circle cx={16} cy={16} r={4.4} fill="currentColor" />
-    </svg>
+      <IconHub size={Math.round(size * 0.54)} />
+    </span>
   )
 }
 
 export default function Logo({
-  size = 'md',
+  onChrome = false,
+  tile = 30,
 }: {
-  size?: 'md' | 'lg'
+  onChrome?: boolean
+  tile?: number
 }) {
-  const mark = size === 'lg' ? 34 : 30
-  const text = size === 'lg' ? 'text-[30px]' : 'text-[26px]'
-
   return (
-    <span className="flex items-center gap-3">
-      <LogoMark size={mark} className="text-[var(--rust)]" />
+    <span className="flex items-center gap-2.5">
+      <LogoTile size={tile} />
       <span
-        className={`font-display leading-none tracking-[-0.01em] text-[var(--ink)] ${text}`}
+        className="text-[15px] font-bold uppercase leading-none tracking-[0.02em]"
+        style={{
+          fontVariationSettings: '"wdth" 112',
+          color: onChrome ? '#fff' : 'var(--ink)',
+        }}
       >
         {site.name}
       </span>

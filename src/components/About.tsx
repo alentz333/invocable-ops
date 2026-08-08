@@ -1,52 +1,44 @@
 import { about, why } from '@/content/site'
+import { Panel, PanelHead } from './Panel'
 
 export default function About() {
   return (
-    <section id="about" className="section section--paper border-y border-[var(--line)]">
-      <div className="container">
-        <div className="grid gap-16 lg:grid-cols-[1.1fr_0.9fr]">
+    <section id="about" className="band">
+      <div className="shell">
+        <div className="grid gap-12 lg:grid-cols-[1.15fr_0.85fr]">
           <div>
-            <p className="eyebrow">About</p>
-            <h2 className="display h2">
+            <p className="label mb-4">About</p>
+            <h2 className="display display-lg max-w-[20ch]">
               Run by someone who owns this function{' '}
               <span className="accent">from the inside</span>.
             </h2>
 
-            <div className="mt-8">
+            <div className="mt-7">
               {about.body.map((para, i) => (
                 <p
                   key={i}
-                  className="mb-5 max-w-[62ch] text-[17px] leading-[1.7] text-[rgba(47,55,68,0.84)] last:mb-0"
+                  className="mb-4 max-w-[64ch] text-[15.5px] leading-[1.68] last:mb-0"
                 >
                   {para}
                 </p>
               ))}
             </div>
-
           </div>
 
-          <div className="lg:pt-24">
-            <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-[var(--steel)]">
-              Why leaders bring me in
-            </p>
-            <div className="mt-6 space-y-px overflow-hidden rounded-[var(--radius)] border border-[var(--line)] bg-[var(--line)]">
-              {why.map((item, i) => (
-                <div key={item.title} className="bg-[var(--canvas)] p-7">
-                  <div className="flex items-baseline gap-3">
-                    <span className="index-num">
-                      {String(i + 1).padStart(2, '0')}
-                    </span>
-                    <h3 className="display text-[21px] text-[var(--ink)]">
-                      {item.title}
-                    </h3>
-                  </div>
-                  <p className="mt-2.5 text-[15px] leading-relaxed text-[var(--steel)]">
+          {/* Record-detail read view: mono label, plain value. */}
+          <Panel className="self-start">
+            <PanelHead glyph="hub" color="#2F35D4" title="Why leaders call" />
+            <div className="panel__body pt-1">
+              {why.map((item) => (
+                <div key={item.title} className="field-row">
+                  <p className="label">{item.title}</p>
+                  <p className="field-row__value text-[14.5px] leading-snug">
                     {item.body}
                   </p>
                 </div>
               ))}
             </div>
-          </div>
+          </Panel>
         </div>
       </div>
     </section>

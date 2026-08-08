@@ -1,20 +1,23 @@
 import type { Metadata } from 'next'
-import { IBM_Plex_Sans, Instrument_Serif } from 'next/font/google'
+import { Archivo, JetBrains_Mono } from 'next/font/google'
 import { site } from '@/content/site'
 import './globals.css'
 
-const plex = IBM_Plex_Sans({
+/**
+ * Archivo is loaded with its width axis so headlines can run expanded —
+ * that width is the page's typographic signature, not a default.
+ */
+const archivo = Archivo({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-plex',
+  axes: ['wdth'],
+  variable: '--font-archivo',
   display: 'swap',
 })
 
-const instrument = Instrument_Serif({
+const jetbrains = JetBrains_Mono({
   subsets: ['latin'],
-  weight: '400',
-  style: ['normal', 'italic'],
-  variable: '--font-instrument',
+  weight: ['400', '500'],
+  variable: '--font-jetbrains',
   display: 'swap',
 })
 
@@ -49,7 +52,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${plex.variable} ${instrument.variable}`}>
+    <html lang="en" className={`${archivo.variable} ${jetbrains.variable}`}>
       <body>{children}</body>
     </html>
   )

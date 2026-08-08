@@ -3,33 +3,33 @@ import Logo from './Logo'
 
 export default function Footer() {
   return (
-    <footer className="border-t border-[var(--line)] bg-[var(--canvas)] py-14">
-      <div className="container">
-        <div className="flex flex-col gap-10 md:flex-row md:items-start md:justify-between">
+    <footer className="on-chrome border-t border-[var(--line-dark)] bg-[var(--chrome)] py-12">
+      <div className="shell">
+        <div className="flex flex-col gap-9 md:flex-row md:items-start md:justify-between">
           <div>
-            <Logo size="lg" />
-            <p className="mt-4 max-w-[36ch] text-[14px] text-[var(--steel)]">
+            <Logo onChrome tile={34} />
+            <p className="mt-3.5 max-w-[34ch] text-[13.5px] text-white/50">
               An independent GTM systems practice for B2B SaaS.
             </p>
           </div>
 
-          <div className="flex flex-col gap-8 sm:flex-row sm:gap-16">
-            <nav className="flex flex-col gap-2.5">
+          <div className="flex flex-col gap-7 sm:flex-row sm:gap-14">
+            <nav className="flex flex-col gap-2">
               {nav.map((item) => (
                 <a
                   key={item.href}
                   href={item.href}
-                  className="text-[14px] text-[var(--steel)] transition-colors hover:text-[var(--rust)]"
+                  className="text-[13.5px] text-white/60 transition-colors hover:text-white"
                 >
                   {item.label}
                 </a>
               ))}
             </nav>
 
-            <div className="flex flex-col gap-2.5">
+            <div className="flex flex-col gap-2">
               <a
                 href={`mailto:${site.email}`}
-                className="text-[14px] text-[var(--steel)] transition-colors hover:text-[var(--rust)]"
+                className="text-[13.5px] text-white/60 transition-colors hover:text-white"
               >
                 {site.email}
               </a>
@@ -37,7 +37,7 @@ export default function Footer() {
                 href={site.linkedin}
                 target="_blank"
                 rel="noreferrer"
-                className="text-[14px] text-[var(--steel)] transition-colors hover:text-[var(--rust)]"
+                className="text-[13.5px] text-white/60 transition-colors hover:text-white"
               >
                 LinkedIn
               </a>
@@ -45,7 +45,7 @@ export default function Footer() {
                 href={site.calendarUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="text-[14px] text-[var(--steel)] transition-colors hover:text-[var(--rust)]"
+                className="text-[13.5px] text-white/60 transition-colors hover:text-white"
               >
                 Book 30 minutes
               </a>
@@ -53,9 +53,9 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 border-t border-[var(--line)] pt-6">
-          <p className="text-[13px] text-[var(--slate)]">
-            © {new Date().getFullYear()} {site.name}. All rights reserved.
+        <div className="mt-10 border-t border-[var(--line-dark)] pt-5">
+          <p className="label">
+            © {new Date().getFullYear()} {site.name}
           </p>
         </div>
       </div>

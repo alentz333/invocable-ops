@@ -1,7 +1,7 @@
 import Nav from '@/components/Nav'
 import Hero from '@/components/Hero'
 import Definition from '@/components/Definition'
-import Services from '@/components/Services'
+import Layers from '@/components/Layers'
 import Platforms from '@/components/Platforms'
 import About from '@/components/About'
 import Engagements from '@/components/Engagements'
@@ -15,7 +15,7 @@ export default function Home() {
       <main>
         <Hero />
         <Definition />
-        <Services />
+        <Layers />
         <Platforms />
         <About />
         <Engagements />
