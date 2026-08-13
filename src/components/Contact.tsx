@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { contact, site } from '@/content/site'
-import { Panel } from './Panel'
+import { Plate } from './Plate'
 import { IconCheck } from './Icons'
 
 type Status = 'idle' | 'sending' | 'sent' | 'error'
@@ -36,140 +36,155 @@ export default function Contact() {
   }
 
   return (
-    <section id="contact" className="band band--chrome on-chrome">
-      <div className="shell">
-        <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr]">
-          <div>
-            <p className="label mb-4">Contact</p>
-            <h2 className="display display-lg">{contact.heading}</h2>
-            <p className="lede">{contact.lede}</p>
+    <>
+      {/* The page's only hazard stripe. Painted on a floor it means
+          "something happens here"; used twice it would mean nothing. */}
+      <div className="hazard" aria-hidden />
 
-            <div className="mt-9 border-t border-[var(--line-dark)] pt-7">
-              <p className="label">Rather just talk</p>
-              <a
-                href={site.calendarUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="btn btn--ghost-light mt-4"
-              >
-                Book 30 minutes →
-              </a>
-              <p className="mt-5 text-[14px] text-white/60">
-                Or email{' '}
-                <a href={`mailto:${site.email}`} className="link">
-                  {site.email}
+      <section id="contact" className="band">
+        <div className="shell">
+          <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr]">
+            <div>
+              <p className="label mb-4">Contact</p>
+              <h2 className="display display-lg">{contact.heading}</h2>
+              <p className="lede">{contact.lede}</p>
+
+              <div className="rule mt-9" />
+
+              <div className="pt-7">
+                <p className="label">Rather just talk</p>
+                <a
+                  href={site.calendarUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="btn btn--neutral mt-4"
+                >
+                  Book 30 minutes →
                 </a>
-              </p>
+                <p className="mt-5 text-[14px] text-[var(--muted)]">
+                  Or email{' '}
+                  <a href={`mailto:${site.email}`} className="link">
+                    {site.email}
+                  </a>
+                </p>
+              </div>
             </div>
-          </div>
 
-          <Panel>
-            <div className="panel__body p-6 sm:p-7">
-              {status === 'sent' ? (
-                <div className="flex min-h-[380px] flex-col items-center justify-center text-center">
-                  <span
-                    className="tile"
-                    style={{ background: 'var(--jade)', width: 40, height: 40 }}
-                    aria-hidden
-                  >
-                    <IconCheck size={19} />
-                  </span>
-                  <h3 className="display display-md mt-5">Got it</h3>
-                  <p className="mt-2 max-w-[34ch] text-[14.5px] text-[var(--muted)]">
-                    I read everything that comes through here and reply within a
-                    business day.
-                  </p>
-                </div>
-              ) : (
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div className="grid gap-4 sm:grid-cols-2">
+            <Plate>
+              <div className="plate__body p-6 sm:p-7">
+                {status === 'sent' ? (
+                  <div className="flex min-h-[380px] flex-col items-center justify-center text-center">
+                    <span
+                      className="slot slot--lg slot--filled"
+                      style={
+                        {
+                          '--slot-tint': '#63C44A38',
+                          '--slot-ink': '#63C44A',
+                        } as React.CSSProperties
+                      }
+                      aria-hidden
+                    >
+                      <IconCheck size={20} />
+                    </span>
+                    <h3 className="display display-md mt-5">Got it</h3>
+                    <p className="mt-2.5 max-w-[34ch] text-[14.5px] text-[var(--muted)]">
+                      I read everything that comes through here and reply within
+                      a business day.
+                    </p>
+                  </div>
+                ) : (
+                  <form onSubmit={handleSubmit} className="space-y-4">
+                    <div className="grid gap-4 sm:grid-cols-2">
+                      <div>
+                        <label className="label mb-1.5 block" htmlFor="name">
+                          Name
+                        </label>
+                        <input
+                          className="input"
+                          id="name"
+                          name="name"
+                          required
+                          autoComplete="name"
+                        />
+                      </div>
+                      <div>
+                        <label className="label mb-1.5 block" htmlFor="company">
+                          Company
+                        </label>
+                        <input
+                          className="input"
+                          id="company"
+                          name="company"
+                          autoComplete="organization"
+                        />
+                      </div>
+                    </div>
+
                     <div>
-                      <label className="label mb-1.5 block" htmlFor="name">
-                        Name
+                      <label className="label mb-1.5 block" htmlFor="email">
+                        Work email
                       </label>
                       <input
                         className="input"
-                        id="name"
-                        name="name"
+                        id="email"
+                        name="email"
+                        type="email"
                         required
-                        autoComplete="name"
+                        autoComplete="email"
                       />
                     </div>
+
                     <div>
-                      <label className="label mb-1.5 block" htmlFor="company">
-                        Company
+                      <label className="label mb-1.5 block" htmlFor="stack">
+                        What&apos;s in your stack
                       </label>
                       <input
                         className="input"
-                        id="company"
-                        name="company"
-                        autoComplete="organization"
+                        id="stack"
+                        name="stack"
+                        placeholder="Salesforce, Outreach, Marketo…"
                       />
                     </div>
-                  </div>
 
-                  <div>
-                    <label className="label mb-1.5 block" htmlFor="email">
-                      Work email
-                    </label>
-                    <input
-                      className="input"
-                      id="email"
-                      name="email"
-                      type="email"
-                      required
-                      autoComplete="email"
-                    />
-                  </div>
+                    <div>
+                      <label className="label mb-1.5 block" htmlFor="message">
+                        What&apos;s broken
+                      </label>
+                      <textarea
+                        className="input resize-y"
+                        id="message"
+                        name="message"
+                        rows={5}
+                        required
+                        placeholder="The more specific, the more useful my first reply will be."
+                      />
+                    </div>
 
-                  <div>
-                    <label className="label mb-1.5 block" htmlFor="stack">
-                      What&apos;s in your stack
-                    </label>
-                    <input
-                      className="input"
-                      id="stack"
-                      name="stack"
-                      placeholder="Salesforce, Outreach, Marketo…"
-                    />
-                  </div>
+                    {status === 'error' && (
+                      <p className="text-[13.5px] text-[var(--fault)]">
+                        {error}
+                      </p>
+                    )}
 
-                  <div>
-                    <label className="label mb-1.5 block" htmlFor="message">
-                      What&apos;s broken
-                    </label>
-                    <textarea
-                      className="input resize-y"
-                      id="message"
-                      name="message"
-                      rows={5}
-                      required
-                      placeholder="The more specific, the more useful my first reply will be."
-                    />
-                  </div>
+                    <button
+                      type="submit"
+                      className="btn btn--confirm w-full"
+                      disabled={status === 'sending'}
+                    >
+                      {status === 'sending' ? 'Sending…' : 'Send'}
+                    </button>
 
-                  {status === 'error' && (
-                    <p className="text-[13.5px] text-[var(--amber)]">{error}</p>
-                  )}
-
-                  <button
-                    type="submit"
-                    className="btn btn--primary w-full"
-                    disabled={status === 'sending'}
-                  >
-                    {status === 'sending' ? 'Sending…' : 'Send'}
-                  </button>
-
-                  <p className="text-[12.5px] leading-relaxed text-[var(--faint)]">
-                    No newsletter, no sequence, no nurture track. It goes to my
-                    inbox.
-                  </p>
-                </form>
-              )}
-            </div>
-          </Panel>
+                    <p className="text-[12.5px] leading-relaxed text-[var(--faint)]">
+                      No newsletter, no sequence, no nurture track. It goes to
+                      my inbox.
+                    </p>
+                  </form>
+                )}
+              </div>
+            </Plate>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   )
 }

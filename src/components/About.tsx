@@ -1,5 +1,5 @@
 import { about, why } from '@/content/site'
-import { Panel, PanelHead } from './Panel'
+import { Plate, PlateHead } from './Plate'
 
 export default function About() {
   return (
@@ -25,20 +25,23 @@ export default function About() {
             </div>
           </div>
 
-          {/* Record-detail read view: mono label, plain value. */}
-          <Panel className="self-start">
-            <PanelHead glyph="hub" color="#2F35D4" title="Why leaders call" />
-            <div className="panel__body pt-1">
+          <Plate className="self-start">
+            <PlateHead glyph="hub" color="#FF9F2B" title="Why leaders call" />
+            <div className="plate__body space-y-4 pt-4">
               {why.map((item) => (
-                <div key={item.title} className="field-row">
-                  <p className="label">{item.title}</p>
-                  <p className="field-row__value text-[14.5px] leading-snug">
+                <div
+                  key={item.title}
+                  className="border-l-2 pl-3.5"
+                  style={{ borderColor: 'var(--orange)' }}
+                >
+                  <p className="label label--accent">{item.title}</p>
+                  <p className="mt-1.5 text-[14.5px] leading-snug text-[var(--ink)]">
                     {item.body}
                   </p>
                 </div>
               ))}
             </div>
-          </Panel>
+          </Plate>
         </div>
       </div>
     </section>

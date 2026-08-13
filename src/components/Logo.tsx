@@ -1,36 +1,29 @@
 import { IconHub } from './Icons'
 import { site } from '@/content/site'
 
-/** The house mark as an object tile — the same chip a CRM puts on a record. */
-export function LogoTile({ size = 30 }: { size?: number }) {
+/** The house mark, seated in a slot like any other item. */
+export function LogoSlot({ lg = false }: { lg?: boolean }) {
   return (
     <span
-      className="tile"
-      style={{ width: size, height: size }}
+      className={`slot slot--filled${lg ? ' slot--lg' : ''}`}
+      style={
+        {
+          '--slot-tint': '#FF9F2B38',
+          '--slot-ink': '#FF9F2B',
+        } as React.CSSProperties
+      }
       aria-hidden
     >
-      <IconHub size={Math.round(size * 0.54)} />
+      <IconHub size={lg ? 22 : 18} />
     </span>
   )
 }
 
-export default function Logo({
-  onChrome = false,
-  tile = 30,
-}: {
-  onChrome?: boolean
-  tile?: number
-}) {
+export default function Logo({ lg = false }: { lg?: boolean }) {
   return (
     <span className="flex items-center gap-2.5">
-      <LogoTile size={tile} />
-      <span
-        className="text-[15px] font-bold uppercase leading-none tracking-[0.02em]"
-        style={{
-          fontVariationSettings: '"wdth" 112',
-          color: onChrome ? '#fff' : 'var(--ink)',
-        }}
-      >
+      <LogoSlot lg={lg} />
+      <span className="text-[15px] font-black uppercase leading-none tracking-[0.06em] text-[var(--ink)]">
         {site.name}
       </span>
     </span>

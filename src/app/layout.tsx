@@ -1,16 +1,18 @@
 import type { Metadata } from 'next'
-import { Archivo, JetBrains_Mono } from 'next/font/google'
+import { Titillium_Web, JetBrains_Mono } from 'next/font/google'
 import { site } from '@/content/site'
 import './globals.css'
 
 /**
- * Archivo is loaded with its width axis so headlines can run expanded —
- * that width is the page's typographic signature, not a default.
+ * Titillium Web is Factorio's own interface typeface. Using it is the
+ * quietest part of the theme and the one that does the most work — the
+ * squared terminals and flat-cut diagonals are what makes a screen of
+ * grey panels read as that game rather than as generic dark mode.
  */
-const archivo = Archivo({
+const titillium = Titillium_Web({
   subsets: ['latin'],
-  axes: ['wdth'],
-  variable: '--font-archivo',
+  weight: ['300', '400', '600', '700', '900'],
+  variable: '--font-titillium',
   display: 'swap',
 })
 
@@ -52,7 +54,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${archivo.variable} ${jetbrains.variable}`}>
+    <html lang="en" className={`${titillium.variable} ${jetbrains.variable}`}>
       <body>{children}</body>
     </html>
   )

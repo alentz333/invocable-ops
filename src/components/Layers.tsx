@@ -1,7 +1,25 @@
-import { layers } from '@/content/site'
-import { Panel, Tile } from './Panel'
+import { layers, layerRecipes } from '@/content/site'
+import { Plate, Slot, SlotEmpty } from './Plate'
 
-const requires = ['Foundation layer', 'Requires 01', 'Requires 01 + 02']
+/** Recipe arrow — inputs on the left, product on the right. */
+function Arrow() {
+  return (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2.4}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="recipe__arrow"
+      aria-hidden
+    >
+      <path d="M4 12h14M13 7l5 5-5 5" />
+    </svg>
+  )
+}
 
 export default function Layers() {
   return (
@@ -19,9 +37,9 @@ export default function Layers() {
 
         <div className="mt-10 grid gap-4 lg:grid-cols-3">
           {layers.map((layer, i) => (
-            <Panel key={layer.num} className="flex flex-col">
-              <div className="panel__head">
-                <Tile glyph={layer.glyph} color={layer.color} />
+            <Plate key={layer.num} className="flex flex-col">
+              <div className="plate__head plate__head--tall">
+                <Slot glyph={layer.glyph} color={layer.color} size="lg" />
                 <div className="min-w-0 flex-1">
                   <p className="label" style={{ color: layer.color }}>
                     Layer {layer.num}
@@ -30,10 +48,35 @@ export default function Layers() {
                 </div>
               </div>
 
-              <div className="panel__body flex flex-1 flex-col">
+              {/* The recipe: what this machine consumes to produce its
+                  output. The dependency between layers is an ingredient
+                  list, so it gets drawn as one rather than described. */}
+              <div className="recipe">
+                {i === 0 ? (
+                  <SlotEmpty />
+                ) : (
+                  layers
+                    .slice(0, i)
+                    .map((input) => (
+                      <Slot
+                        key={input.num}
+                        glyph={input.glyph}
+                        color={input.color}
+                        size="sm"
+                      />
+                    ))
+                )}
+                <Arrow />
+                <Slot glyph={layer.glyph} color={layer.color} size="sm" />
+                <p className="label ml-auto pl-2 text-right">
+                  {layerRecipes[i]}
+                </p>
+              </div>
+
+              <div className="plate__body flex flex-1 flex-col">
                 <p className="text-[14.5px] leading-relaxed">{layer.summary}</p>
 
-                <ul className="mt-5 flex-1 space-y-2.5 border-t border-[var(--line-soft)] pt-5">
+                <ul className="mt-5 flex-1 space-y-2.5">
                   {layer.points.map((point) => (
                     <li
                       key={point}
@@ -41,19 +84,15 @@ export default function Layers() {
                     >
                       <span
                         aria-hidden
-                        className="mt-[7px] h-[5px] w-[5px] flex-none rounded-[1px]"
+                        className="mt-[7px] h-[5px] w-[5px] flex-none"
                         style={{ background: layer.color }}
                       />
                       {point}
                     </li>
                   ))}
                 </ul>
-
-                <p className="label mt-5 border-t border-[var(--line-soft)] pt-4">
-                  {requires[i]}
-                </p>
               </div>
-            </Panel>
+            </Plate>
           ))}
         </div>
       </div>

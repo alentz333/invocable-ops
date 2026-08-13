@@ -8,25 +8,32 @@ Live at **[invocableops.com](https://invocableops.com)**.
 
 - **Next.js 16** (App Router) + React 19 + TypeScript
 - **Tailwind CSS 4** (via `@tailwindcss/postcss`) layered over a hand-rolled design system in `src/app/globals.css`
-- **Fonts:** Archivo (display + UI, loaded with its `wdth` axis) + JetBrains Mono (field labels), via `next/font/google`
+- **Fonts:** Titillium Web (display + UI) + JetBrains Mono (readouts), via `next/font/google`
 - Contact form posts to a Route Handler that relays through **Resend**
 
 ## Design direction
 
-The site is built with the visual grammar of the tool its audience lives in all day: **a Salesforce console, reinterpreted.** Panels with header strips, colour-coded object tiles, mono field labels, tight 6px radii, and a dense data-forward layout — Salesforce-adjacent on purpose, Salesforce-derivative nowhere.
+The site is built with the visual grammar of **Factorio**: stamped steel plates with a hard bevel, sunken inventory slots, machine recipes, hazard stripes, and belts that actually move.
 
-Deliberate departures from SLDS so it evokes rather than imitates:
+This isn't a costume. Factorio is the most widely understood visual language for *a system that runs itself*, which is the entire pitch — and the mapping is literal rather than decorative:
 
-| | SLDS | Here |
-|---|---|---|
-| Accent | `#0176D3` (hue 205°) | `#2F35D4` (hue 238°) |
-| Canvas | `#F3F3F3` neutral | `#EBEEF5` blue-tinted |
-| Display type | Salesforce Sans, sentence case | Archivo **expanded** (`wdth 116`), uppercase |
-| Icons | Salesforce icon set | Custom 24-unit glyph family in `Icons.tsx` |
+| Concept | Rendered as |
+|---|---|
+| Lead lifecycle | A production line of machines joined by conveyor belts |
+| A stage nobody owns | A blocked machine with cargo piled up behind it |
+| Layer dependencies | Machine recipes — earlier layers sit in the ingredient slots |
+| Engagement models | Tech-tree nodes with a cost strip |
+| The practice's name | A Factorio item tooltip |
 
-**The signature element is the Path** (`Path.tsx`) — the chevron stage component every revenue person reads instantly as "where this record actually is." It appears once, in the hero, showing a lead lifecycle stalling in a typical stack and running clean after a rebuild. That is the whole pitch, stated before a word of copy is read.
+**Titillium Web is Factorio's own interface typeface.** It is the quietest part of the theme and does the most work: its squared terminals and flat-cut diagonals are what makes a screen of grey panels read as *that game* rather than as generic dark mode.
 
-Structural numbering is load-bearing, not decorative: the three service panels are numbered because each layer genuinely depends on the one before it (`Requires 01`, `Requires 01 + 02`). The four engagement models are *not* numbered, because they're alternatives rather than a sequence.
+**The signature element is the Line** (`Line.tsx`). It appears once, in the hero, showing the same five machines twice — jammed in a typical stack, running after a rebuild. That is the whole pitch, stated before a word of copy is read.
+
+Belt state is **derived, never authored**, so the picture stays physically honest: a belt backs up *before* a blocked machine and starves *after* it. Getting that backwards is the tell that a factory is a costume.
+
+Structural numbering is load-bearing, not decorative: the three service layers are numbered because each genuinely consumes the output of the one before it, which is why they render as recipes. The four engagement models are *not* numbered and carry no dependency arrows, because they're alternatives rather than a sequence — the absence is the information.
+
+**There are deliberately no throughput numbers.** The lifecycle is illustrative, so the readout is a bar of cells reading `Output blocked` / `Running`. A figure like "412 leads/hr" would turn an illustration into a claim about a client's results.
 
 ## Running locally
 
@@ -42,14 +49,18 @@ npm run lint    # eslint
 
 ## Design system
 
-Tokens live at the top of `src/app/globals.css`.
+Tokens live at the top of `src/app/globals.css`. The palette is warm grey steel (`#191917` ground, `#34342f` plate) with Factorio's own signal colours: orange chrome `#ff9f2b`, belt yellow `#d8ab2e`, and science-pack red/green/blue for item states.
 
-Component classes (`.btn`, `.panel`, `.band`, `.display`, `.label`, `.path`) are defined inside `@layer components` **on purpose** — Tailwind v4 emits utilities into `@layer utilities`, and unlayered CSS would beat them in the cascade, silently breaking things like `md:hidden` on a `.btn`.
+Component classes (`.plate`, `.slot`, `.btn`, `.line`, `.belt`, `.recipe`, `.tooltip`, `.meter`) are defined inside `@layer components` **on purpose** — Tailwind v4 emits utilities into `@layer utilities`, and unlayered CSS would beat them in the cascade, silently breaking things like `md:hidden` on a `.btn`.
 
-Two cascade gotchas worth knowing before editing:
+Things worth knowing before editing:
 
-- `.band--chrome` recolours `.display`, `.label`, and `.link` for dark sections. A **light panel nested inside a dark band** needs those rules undone or its text renders white-on-white — that's what the `.band--chrome .panel:not(.panel--chrome)` block exists for.
-- The Path uses `clip-path` for its chevrons, which cannot render borders. Stages rely on background fills, so they need a canvas darker than white behind them.
+- **The page is dark end to end.** The old light/dark band inversion is gone, and with it the white-on-white hazard that came from nesting a light panel inside a dark band.
+- **`.plate` sets `overflow: hidden`** so square-cornered heads and recipe strips clip to its radius. Its drop shadow is on the element's own box, so it survives the clip.
+- **`.plate__head--tall`** exists only to keep recipe strips level across a row when one title wraps to two lines.
+- **Cargo travels by animating `top`/`left`, not a transform.** A belt is a flex child of unknown width, so only a percentage offset against the container spans it at every viewport.
+- **The Line goes vertical below 700px** — belts swap their gradient and travel axis rather than shipping a horizontal scroller.
+- **One hazard stripe, on the contact band.** Painted on a floor it means "something happens here"; used twice it would mean nothing.
 
 ## Editing content
 
@@ -78,5 +89,8 @@ src/
 │   ├── globals.css          # design tokens + component layer
 │   └── api/contact/route.ts # form handler (Resend)
 ├── components/              # one file per section
+│   ├── Line.tsx             # the signature production line
+│   ├── Plate.tsx            # plate / slot / meter primitives
+│   └── Icons.tsx            # 24-unit glyph family
 └── content/site.ts          # ALL copy and config
 ```

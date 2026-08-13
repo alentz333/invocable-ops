@@ -37,23 +37,38 @@ export const hero = {
 }
 
 /**
- * The Path. Five stages every inbound lead moves through, shown twice:
+ * The Line. Five machines every inbound lead passes through, shown twice:
  * how it runs in a stack nobody owns, and how it runs after the rebuild.
+ *
  * Deliberately no numbers — these are illustrative states, not results.
+ * The throughput readout is a bar of cells for exactly that reason: a
+ * figure here would read as a client outcome, and it isn't one.
  */
-export type StageState = 'done' | 'stalled' | 'open'
+export type StageState = 'running' | 'blocked' | 'starved'
+
+export type Stage = { name: string; glyph: GlyphName }
 
 export const lifecycle = {
-  stages: ['Captured', 'Enriched', 'Scored', 'Routed', 'Worked'] as const,
+  stages: [
+    { name: 'Capture', glyph: 'funnel' },
+    { name: 'Enrich', glyph: 'waterfall' },
+    { name: 'Score', glyph: 'target' },
+    { name: 'Route', glyph: 'sync' },
+    { name: 'Work', glyph: 'dispatch' },
+  ] as Stage[],
   before: {
-    label: 'Typical stack',
-    states: ['done', 'done', 'stalled', 'open', 'open'] as StageState[],
-    note: 'Stalls at scoring. Nobody owns the gap, so the lead ages.',
+    label: 'Current stack',
+    status: 'Output blocked',
+    meter: 1,
+    states: ['running', 'running', 'blocked', 'starved', 'starved'] as StageState[],
+    note: 'Scoring is nobody’s job, so leads back up behind it and every rep downstream sits idle.',
   },
   after: {
     label: 'After the rebuild',
-    states: ['done', 'done', 'done', 'done', 'done'] as StageState[],
-    note: 'Every stage owned, instrumented, and reportable.',
+    status: 'Running',
+    meter: 6,
+    states: ['running', 'running', 'running', 'running', 'running'] as StageState[],
+    note: 'Every stage owned, instrumented, and reportable — no hand-feeding between machines.',
   },
 }
 
@@ -71,8 +86,17 @@ export const definition = {
 
 /* ----------------------------------------------------------------
    Three layers, ordered by dependency: each one needs the one
-   before it. The numbering is load-bearing, not decoration.
+   before it. The numbering is load-bearing, not decoration — which
+   is exactly why each layer renders as a machine recipe, with the
+   layers before it sitting in the ingredient slots.
    ---------------------------------------------------------------- */
+
+/** Caption under each recipe strip. Index matches `layers`. */
+export const layerRecipes = [
+  'Input: whatever you have now',
+  'Input: output of 01',
+  'Input: output of 01 + 02',
+] as const
 
 export const layers: {
   num: string
@@ -86,7 +110,7 @@ export const layers: {
     num: '01',
     title: 'Revenue architecture',
     glyph: 'foundation',
-    color: '#3F4A6B',
+    color: '#8FA3B8',
     summary:
       'The data model and reporting layer underneath everything else. Unglamorous, and the reason the other two hold.',
     points: [
@@ -100,7 +124,7 @@ export const layers: {
     num: '02',
     title: 'AI-native pipeline systems',
     glyph: 'resolve',
-    color: '#2F35D4',
+    color: '#FF9F2B',
     summary:
       'Where AI actually belongs in the funnel — and where it quietly makes things worse.',
     // TODO: replace these with the real things you've built. This is the
@@ -116,7 +140,7 @@ export const layers: {
     num: '03',
     title: 'Outbound & lifecycle engines',
     glyph: 'dispatch',
-    color: '#0E7C86',
+    color: '#63C44A',
     summary:
       'The execution layer — sequencing, nurture, and handoffs wired so nobody is copying fields between tabs.',
     points: [
@@ -140,37 +164,37 @@ export const platforms: {
     name: 'Salesforce',
     detail: 'Sales Cloud — data model, automation, forecasting, reporting',
     glyph: 'cloud',
-    color: '#2F35D4',
+    color: '#4AA3E0',
   },
   {
     name: 'Outreach',
     detail: 'Sequence architecture, CRM sync, rep workflow',
     glyph: 'cadence',
-    color: '#0E7C86',
+    color: '#63C44A',
   },
   {
     name: 'HubSpot',
     detail: 'Marketing Hub and CRM, lifecycle and lead flow',
     glyph: 'sync',
-    color: '#C7761A',
+    color: '#FF9F2B',
   },
   {
     name: 'Marketo',
     detail: 'Program design, scoring, nurture, sync hygiene',
     glyph: 'funnel',
-    color: '#7A3EA1',
+    color: '#A45EC9',
   },
   {
     name: 'Apollo',
     detail: 'Prospecting, data, and outbound execution',
     glyph: 'target',
-    color: '#0B8A63',
+    color: '#E5C33A',
   },
   {
     name: 'Clay',
     detail: 'Enrichment waterfalls, research agents, CRM write-back',
     glyph: 'waterfall',
-    color: '#3F4A6B',
+    color: '#8FA3B8',
   },
 ]
 
@@ -214,7 +238,7 @@ export const engagements: {
     title: 'Audit',
     terms: 'TODO: e.g. 2 weeks, fixed fee',
     glyph: 'target',
-    color: '#3F4A6B',
+    color: '#8FA3B8',
     body: 'I map what you have — objects, automations, integrations, where the data actually breaks — and hand back a prioritized list of what to fix, in what order, and what it buys you. Yours to keep whether or not we work together after.',
     best: 'Best when you suspect something is wrong but can’t name it.',
   },
@@ -222,7 +246,7 @@ export const engagements: {
     title: 'Build sprint',
     terms: 'TODO: e.g. 4–8 weeks, scoped per project',
     glyph: 'foundation',
-    color: '#2F35D4',
+    color: '#FF9F2B',
     body: 'A defined build with a start and an end. Rebuild lead routing. Stand up Clay-to-Salesforce enrichment. Migrate Marketo to HubSpot without losing attribution history. Scoped up front, documented on delivery.',
     best: 'Best when you know exactly what needs to exist.',
   },
@@ -230,7 +254,7 @@ export const engagements: {
     title: 'Fractional systems lead',
     terms: 'TODO: e.g. monthly retainer',
     glyph: 'hub',
-    color: '#0E7C86',
+    color: '#4AA3E0',
     body: "I'm the systems owner for a team that doesn't have one yet. Roadmap, builds, vendor decisions, and the judgment calls in between — at the fraction of the week the problem actually requires.",
     best: 'Best when the work is ongoing and nobody senior owns it.',
   },
@@ -238,7 +262,7 @@ export const engagements: {
     title: 'Enablement',
     terms: 'TODO: e.g. per engagement',
     glyph: 'resolve',
-    color: '#C7761A',
+    color: '#63C44A',
     body: 'Teaching your admin or first ops hire to run what exists — the architecture, the reasoning behind it, and the failure modes to watch. The goal is that you stop needing me.',
     best: 'Best when you have the headcount but not the depth.',
   },

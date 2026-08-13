@@ -1,9 +1,11 @@
 /**
- * Custom glyph set for the object tiles.
+ * Glyph set for the slots.
  *
- * Deliberately drawn rather than borrowed: same 24-unit grid, same 1.85
- * stroke, so they read as one family the way a CRM's object icons do —
- * without reusing anyone else's icon shapes.
+ * Drawn heavier than a typical UI icon set — 2.1 stroke on a 24-unit
+ * grid, with solid cores. Factorio's item icons are painted 3D props,
+ * so they read as objects with mass; flat hairline strokes sitting in
+ * a recessed slot would look like a web app wearing a costume. Weight
+ * is what sells it.
  */
 
 type IconProps = { size?: number }
@@ -14,130 +16,156 @@ const base = (size: number) => ({
   viewBox: '0 0 24 24',
   fill: 'none',
   stroke: 'currentColor',
-  strokeWidth: 1.85,
+  strokeWidth: 2.1,
   strokeLinecap: 'round' as const,
   strokeLinejoin: 'round' as const,
   'aria-hidden': true,
 })
 
-/** Hub and spoke — the house mark. Four systems into one core. */
+/** Gear — the house mark, and the "assembling" glyph. */
 export function IconHub({ size = 16 }: IconProps) {
   return (
     <svg {...base(size)}>
-      {/* Spokes stop short of the nodes so the mark still reads as
-          hub-and-spoke at 16px instead of collapsing into an X. */}
-      <path d="M12 12 9.2 9.2M12 12l2.8-2.8M12 12l-2.8 2.8M12 12l2.8 2.8" />
-      <circle cx="6.5" cy="6.5" r="2.1" />
-      <circle cx="17.5" cy="6.5" r="2.1" />
-      <circle cx="6.5" cy="17.5" r="2.1" />
-      <circle cx="17.5" cy="17.5" r="2.1" />
-      <circle cx="12" cy="12" r="2.4" fill="currentColor" stroke="none" />
+      {/* Eight teeth as one path so the mark holds together at 16px. */}
+      <path
+        d="M12 2.6l1.9.55.9-1.05 1.65 1.1-.35 1.35 1.4 1.4 1.35-.35 1.1 1.65-1.05.9.55 1.9-.55 1.9 1.05.9-1.1 1.65-1.35-.35-1.4 1.4.35 1.35-1.65 1.1-.9-1.05-1.9.55-1.9-.55-.9 1.05-1.65-1.1.35-1.35-1.4-1.4-1.35.35-1.1-1.65 1.05-.9L2.6 12l-.55-1.9-1.05-.9 1.1-1.65 1.35.35 1.4-1.4-.35-1.35 1.65-1.1.9 1.05z"
+        strokeWidth={1.7}
+      />
+      <circle cx="12" cy="12" r="3.4" fill="currentColor" stroke="none" />
     </svg>
   )
 }
 
-/** Layered foundation — the data model everything else stands on. */
+/** Stacked plates — the data model everything else is built from. */
 export function IconFoundation({ size = 16 }: IconProps) {
   return (
     <svg {...base(size)}>
-      <path d="M3 17.5 12 21.5l9-4M3 12.5 12 16.5l9-4" />
-      <path d="m3 7.5 9-4 9 4-9 4z" />
+      <path d="m3 7 9-4 9 4-9 4z" fill="currentColor" stroke="none" />
+      <path d="m3 7 9-4 9 4-9 4z" />
+      <path d="M3 12.2 12 16.2l9-4M3 17.2l9 4 9-4" />
     </svg>
   )
 }
 
-/** Signal resolving to a point — enrichment and scoring. */
+/** Splitter — inputs resolved into one clean output. */
 export function IconResolve({ size = 16 }: IconProps) {
   return (
     <svg {...base(size)}>
-      <path d="M3 5.5h7M3 12h4M3 18.5h7" />
-      <path d="M10 5.5c5 0 3.5 6.5 8 6.5M10 18.5c5 0 3.5-6.5 8-6.5" />
-      <circle cx="19.5" cy="12" r="2.2" fill="currentColor" stroke="none" />
+      <path d="M3 6h5.5M3 18h5.5" />
+      <path d="M8.5 6c4.5 0 3 6 7 6M8.5 18c4.5 0 3-6 7-6" />
+      <rect
+        x="15.5"
+        y="8.7"
+        width="6.5"
+        height="6.5"
+        rx="1"
+        fill="currentColor"
+        stroke="none"
+      />
     </svg>
   )
 }
 
-/** Outbound — sequenced sends leaving the system. */
+/** Inserter — the arm that moves work out of the machine. */
 export function IconDispatch({ size = 16 }: IconProps) {
   return (
     <svg {...base(size)}>
-      <path d="M21 3 10.5 13.5M21 3l-6.5 18-4-7.5L3 9.5z" />
+      <path d="M5 20.5V15l6-9" />
+      <rect x="2.5" y="20" width="5" height="2" rx="1" fill="currentColor" stroke="none" />
+      <path d="m11 6 8.5 2.5M19.5 8.5 16 15" />
+      <circle cx="19.5" cy="8.5" r="2.6" fill="currentColor" stroke="none" />
     </svg>
   )
 }
 
-/** Cloud — the CRM of record. */
+/** Storage tank — the system of record everything drains into. */
 export function IconCloud({ size = 16 }: IconProps) {
   return (
     <svg {...base(size)}>
-      <path d="M7 18.5a4.2 4.2 0 0 1-.3-8.4A5.4 5.4 0 0 1 17 9.2a3.9 3.9 0 0 1 .6 7.7l-.6.05z" />
+      <rect x="4" y="5" width="16" height="15" rx="1.5" />
+      <path d="M4 13.5h16" />
+      <path d="M4 16.5h16V19a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z" fill="currentColor" stroke="none" />
+      <path d="M8 5V2.8M16 5V2.8" />
     </svg>
   )
 }
 
-/** Ascending cadence — sequences stepping over time. */
+/** Stepped output — cadence increasing over time. */
 export function IconCadence({ size = 16 }: IconProps) {
   return (
     <svg {...base(size)}>
-      <path d="M3 20.5h4v-5H3zM10 20.5h4v-9h-4zM17 20.5h4V6.5h-4z" />
+      <path d="M3 21h4.5v-5H3zM9.75 21h4.5v-9.5h-4.5zM16.5 21H21V5.5h-4.5z" fill="currentColor" stroke="none" />
+      <path d="M3 21h4.5v-5H3zM9.75 21h4.5v-9.5h-4.5zM16.5 21H21V5.5h-4.5z" />
     </svg>
   )
 }
 
-/** Funnel — lifecycle narrowing to qualified. */
+/** Furnace mouth — volume in, qualified out. */
 export function IconFunnel({ size = 16 }: IconProps) {
   return (
     <svg {...base(size)}>
-      <path d="M3 4.5h18l-7 8v7l-4 2v-9z" />
+      <path d="M2.5 4h19l-7.5 8.5V21l-4-2.5v-6z" />
+      <path d="M2.5 4h19l-2.2 2.5H4.7z" fill="currentColor" stroke="none" />
     </svg>
   )
 }
 
-/** Target — account selection and ICP fit. */
+/** Targeting reticle — ICP fit. */
 export function IconTarget({ size = 16 }: IconProps) {
   return (
     <svg {...base(size)}>
-      <circle cx="12" cy="12" r="8.5" />
-      <circle cx="12" cy="12" r="4.2" />
-      <circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none" />
+      <circle cx="12" cy="12" r="8.5" strokeWidth={1.9} />
+      <path d="M12 1.8v4M12 18.2v4M1.8 12h4M18.2 12h4" />
+      <circle cx="12" cy="12" r="2.8" fill="currentColor" stroke="none" />
     </svg>
   )
 }
 
-/** Waterfall — enrichment steps cascading down. */
+/** Cascading pipe run — the enrichment waterfall. */
 export function IconWaterfall({ size = 16 }: IconProps) {
   return (
     <svg {...base(size)}>
-      <path d="M3.5 4.5h7v6h7v6h-7M3.5 4.5v6h7" />
-      <circle cx="17.5" cy="19.5" r="2" />
+      <path d="M3.5 4.5h6.5v6.5h6.5v6.5h-6.5" />
+      <circle cx="19.5" cy="17.5" r="2.4" fill="currentColor" stroke="none" />
+      <circle cx="3.5" cy="4.5" r="1.8" fill="currentColor" stroke="none" />
     </svg>
   )
 }
 
-/** Two-way sync — records reconciled between systems. */
+/** Circuit loop — two systems reconciled against each other. */
 export function IconSync({ size = 16 }: IconProps) {
   return (
     <svg {...base(size)}>
-      <path d="M4 9.5h13l-3.5-3.5M20 14.5H7l3.5 3.5" />
+      <path d="M4 9h13l-3.5-3.5M20 15H7l3.5 3.5" />
     </svg>
   )
 }
 
-/** Check — a stage that closed cleanly. */
+/** Belt segment — throughput itself. */
+export function IconBelt({ size = 16 }: IconProps) {
+  return (
+    <svg {...base(size)}>
+      <rect x="2" y="7.5" width="20" height="9" rx="1" />
+      <path d="M6 7.5 8.5 12 6 16.5M11.5 7.5 14 12l-2.5 4.5M17 7.5 19.5 12 17 16.5" strokeWidth={1.7} />
+    </svg>
+  )
+}
+
+/** Check — a stage running clean. */
 export function IconCheck({ size = 13 }: IconProps) {
   return (
-    <svg {...base(size)} strokeWidth={2.6}>
+    <svg {...base(size)} strokeWidth={2.9}>
       <path d="m4.5 12.5 5 5 10-11" />
     </svg>
   )
 }
 
-/** Alert — a stage nobody owns. */
+/** Alert — the blocked stage. Factorio's yellow warning triangle. */
 export function IconAlert({ size = 13 }: IconProps) {
   return (
-    <svg {...base(size)} strokeWidth={2.4}>
-      <path d="M12 7.5v6M12 17.2v.3" />
-      <circle cx="12" cy="12" r="9" strokeWidth={1.9} />
+    <svg {...base(size)} strokeWidth={2.2}>
+      <path d="M12 3.4 22 20.6H2z" />
+      <path d="M12 10v4.4M12 17.8v.3" />
     </svg>
   )
 }
@@ -153,6 +181,7 @@ export const glyphs = {
   target: IconTarget,
   waterfall: IconWaterfall,
   sync: IconSync,
+  belt: IconBelt,
 } as const
 
 export type GlyphName = keyof typeof glyphs

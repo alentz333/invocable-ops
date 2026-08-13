@@ -1,12 +1,14 @@
 @import "tailwindcss";
 
 /* ============================================================
-   Invocable Ops — "the console"
+   Invocable Ops — "the factory floor"
 
-   A marketing site built with the grammar of the tool the
-   audience lives in all day: panels, object tiles, mono field
-   labels, and the stage Path. Salesforce-adjacent on purpose,
-   Salesforce-derivative nowhere.
+   The site is built with the visual grammar of Factorio: stamped
+   steel plates with a hard bevel, sunken inventory slots, hazard
+   stripes, and belts that actually move. The metaphor is not
+   decoration — a backed-up belt is the single clearest picture of
+   a pipeline that stalls, and every stage of this practice's work
+   maps onto a machine on a line.
 
    Component classes live in @layer components so Tailwind
    utilities (in @layer utilities) can override them. Unlayered
@@ -14,56 +16,61 @@
    ============================================================ */
 
 @theme {
-  --font-sans: var(--font-archivo), system-ui, -apple-system, sans-serif;
+  --font-sans: var(--font-titillium), system-ui, -apple-system, sans-serif;
   --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, monospace;
 
-  --color-canvas: #ebeef5;
-  --color-panel: #ffffff;
-  --color-ink: #0e1120;
-  --color-muted: #59617d;
-  --color-line: #d3d9e6;
-  --color-primary: #2f35d4;
-  --color-jade: #0b8a63;
-  --color-amber: #c7761a;
+  --color-ground: #191917;
+  --color-plate: #34342f;
+  --color-ink: #eae7dd;
+  --color-muted: #a5a196;
+  --color-orange: #ff9f2b;
+  --color-belt: #d8ab2e;
+  --color-running: #63c44a;
+  --color-fault: #e0533d;
 }
 
 :root {
-  /* Surfaces */
-  --canvas: #ebeef5;
-  --panel: #ffffff;
-  --panel-alt: #f6f8fc;
-  --chrome: #0e1120;
-  --chrome-hi: #1b2033;
+  /* Surfaces — warm greys. Factorio's world is steel and rust,
+     never the cold blue-grey of a generic dark theme. */
+  --ground: #191917;
+  --well: #212120;
+  --plate: #34342f;
+  --plate-hi: #3f3f39;
+  --raised: #4a4a43;
+  --edge: #0e0e0d;
 
   /* Ink */
-  --ink: #0e1120;
-  --body: #333b55;
-  --muted: #59617d;
-  --faint: #8a92ab;
+  --ink: #eae7dd;
+  --body: #c4c0b4;
+  --muted: #a5a196;
+  --faint: #7c786e;
 
   /* Lines */
-  --line: #d3d9e6;
-  --line-soft: #e3e8f1;
-  --line-dark: rgba(255, 255, 255, 0.14);
+  --bevel-hi: rgba(255, 255, 255, 0.11);
+  --bevel-lo: rgba(0, 0, 0, 0.5);
+  --line: #232321;
 
-  /* Accent + states */
-  --primary: #2f35d4;
-  --primary-dark: #242aad;
-  --primary-wash: #eef0fe;
-  --jade: #0b8a63;
-  --jade-wash: #e6f5ef;
-  --amber: #c7761a;
-  --amber-wash: #fdf2e3;
+  /* Accent + states. Sampled from the game's own signal colours:
+     orange chrome, belt yellow, science-pack red/green/blue. */
+  --orange: #ff9f2b;
+  --orange-dark: #e0851a;
+  --orange-wash: rgba(255, 159, 43, 0.13);
+  --belt: #d8ab2e;
+  --belt-dark: #9a7818;
+  --running: #63c44a;
+  --running-wash: rgba(99, 196, 74, 0.13);
+  --fault: #e0533d;
+  --fault-wash: rgba(224, 83, 61, 0.13);
+  --logistic: #4aa3e0;
 
   /* Depth */
-  --shadow-sm: 0 1px 2px rgba(14, 17, 32, 0.06);
-  --shadow: 0 2px 6px rgba(14, 17, 32, 0.08), 0 1px 2px rgba(14, 17, 32, 0.05);
-  --shadow-lg: 0 12px 28px rgba(14, 17, 32, 0.1);
+  --shadow: 0 3px 0 rgba(0, 0, 0, 0.4), 0 6px 14px rgba(0, 0, 0, 0.35);
+  --sunken: inset 0 2px 5px rgba(0, 0, 0, 0.65),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.05);
 
-  /* Geometry — deliberately tight. SLDS is not a pillowy UI. */
-  --radius: 6px;
-  --radius-sm: 4px;
-  --radius-tile: 7px;
+  /* Geometry — stamped metal, not soft plastic. */
+  --radius: 3px;
+  --radius-sm: 2px;
   --max: 1200px;
 }
 
@@ -78,31 +85,27 @@
 
   body {
     margin: 0;
-    background: var(--canvas);
+    background: var(--ground);
     color: var(--body);
     font-family: var(--font-sans);
-    font-size: 15px;
-    line-height: 1.6;
+    font-size: 15.5px;
+    line-height: 1.62;
     -webkit-font-smoothing: antialiased;
   }
 
   ::selection {
-    background: var(--primary);
-    color: #fff;
+    background: var(--orange);
+    color: #1a1a17;
   }
 
   :focus-visible {
-    outline: 2px solid var(--primary);
+    outline: 2px solid var(--orange);
     outline-offset: 2px;
     border-radius: var(--radius-sm);
   }
 
-  .on-chrome :focus-visible {
-    outline-color: #8f94ff;
-  }
-
   section[id] {
-    scroll-margin-top: 76px;
+    scroll-margin-top: 74px;
   }
 }
 
@@ -117,326 +120,508 @@
   }
 
   .band {
-    padding: 76px 0;
+    padding: 78px 0;
   }
 
   .band--tight {
     padding: 52px 0;
   }
 
-  .band--chrome {
-    background: var(--chrome);
-    color: #fff;
-  }
-
-  .band--alt {
-    background: var(--panel-alt);
+  /* The recessed floor a machine sits on. */
+  .band--well {
+    background: var(--well);
+    border-top: 1px solid var(--edge);
+    border-bottom: 1px solid var(--edge);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
   }
 
   /* ---------- Type ----------
-     Archivo's width axis is the personality here: headlines run
-     expanded and uppercase, like the label on an instrument. */
+     Titillium Web is Factorio's own interface face. Headlines run
+     heavy, uppercase, and slightly tracked — the way text is
+     stencilled onto equipment rather than typeset. */
 
   .display {
     font-family: var(--font-sans);
-    font-variation-settings: "wdth" 116;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: -0.005em;
-    line-height: 1.03;
+    letter-spacing: 0.005em;
+    line-height: 1.06;
     margin: 0;
     color: var(--ink);
     text-wrap: balance;
   }
 
-  .band--chrome .display,
-  .display--invert {
-    color: #fff;
-  }
-
   .display-xl {
-    font-size: clamp(33px, 3.9vw, 52px);
+    font-size: clamp(34px, 4.1vw, 55px);
+    font-weight: 900;
+    letter-spacing: -0.008em;
   }
 
   .display-lg {
-    font-size: clamp(25px, 2.7vw, 36px);
+    font-size: clamp(26px, 2.8vw, 37px);
+    font-weight: 900;
+    letter-spacing: -0.004em;
   }
 
   .display-md {
-    font-size: clamp(19px, 1.7vw, 23px);
-    line-height: 1.12;
+    font-size: clamp(18px, 1.6vw, 21px);
+    line-height: 1.14;
+    letter-spacing: 0.012em;
   }
 
   .accent {
-    color: var(--primary);
-  }
-
-  .band--chrome .accent {
-    color: #9aa0ff;
+    color: var(--orange);
   }
 
   .lede {
     font-size: clamp(16px, 1.2vw, 18px);
-    line-height: 1.62;
+    line-height: 1.6;
     color: var(--muted);
     max-width: 60ch;
     margin: 18px 0 0;
   }
 
-  .band--chrome .lede {
-    color: rgba(255, 255, 255, 0.7);
-  }
-
-  /* Mono utility label — the "field label" voice throughout. */
+  /* Mono utility label — the stencilled readout voice throughout. */
   .label {
     font-family: var(--font-mono);
     font-size: 11px;
     font-weight: 500;
-    letter-spacing: 0.09em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--muted);
+    color: var(--faint);
     margin: 0;
   }
 
   .label--accent {
-    color: var(--primary);
+    color: var(--orange);
   }
 
-  .band--chrome .label {
-    color: rgba(255, 255, 255, 0.55);
-  }
+  /* ---------- Plate ----------
+     The core surface. A hard 1px black edge, a light top bevel and
+     a dark bottom one, and a 3px drop that reads as thickness. */
 
-  /* ---------- Panel ---------- */
-
-  .panel {
-    background: var(--panel);
-    border: 1px solid var(--line);
+  .plate {
+    position: relative;
+    background: linear-gradient(180deg, var(--plate-hi), var(--plate));
+    border: 1px solid var(--edge);
     border-radius: var(--radius);
-    box-shadow: var(--shadow-sm);
+    /* Clips the square-cornered head and recipe strips to the plate's
+       radius. The drop shadow is the element's own box, so it survives. */
+    overflow: hidden;
+    box-shadow: inset 0 1px 0 var(--bevel-hi),
+      inset 0 -1px 0 var(--bevel-lo), var(--shadow);
   }
 
-  .panel__head {
+  .plate__head {
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 13px 16px;
-    border-bottom: 1px solid var(--line-soft);
+    padding: 12px 14px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent);
+    border-bottom: 1px solid var(--edge);
+    box-shadow: 0 1px 0 var(--bevel-hi);
   }
 
-  .panel__body {
+  /* Keeps the recipe strips level across a row of plates when one
+     title wraps to a second line. */
+  .plate__head--tall {
+    min-height: 98px;
+    align-items: flex-start;
+  }
+
+  .plate__body {
     padding: 20px 16px;
   }
 
-  .panel--chrome {
-    background: var(--chrome-hi);
-    border-color: var(--line-dark);
-    box-shadow: none;
-  }
+  /* ---------- Slot ----------
+     The inventory square: punched into the plate, not sitting on
+     it. Everything that holds a "thing" is one of these. */
 
-  .panel--chrome .panel__head {
-    border-bottom-color: var(--line-dark);
-  }
-
-  /* A light panel nested inside a dark band is still a light surface.
-     Without this the .band--chrome text rules leak in and render the
-     contact form's labels and headings white-on-white. */
-  .band--chrome .panel:not(.panel--chrome) .display {
-    color: var(--ink);
-  }
-
-  .band--chrome .panel:not(.panel--chrome) .label {
-    color: var(--muted);
-  }
-
-  .band--chrome .panel:not(.panel--chrome) .link {
-    color: var(--primary);
-  }
-
-  /* ---------- Object tile ----------
-     The rounded-square icon chip. Colour-coded per record type,
-     the way a CRM colour-codes Lead vs Account vs Opportunity. */
-
-  .tile {
+  .slot {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 30px;
-    height: 30px;
+    width: 34px;
+    height: 34px;
     flex: none;
-    border-radius: var(--radius-tile);
-    color: #fff;
-    background: var(--primary);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--edge);
+    background: #26262300;
+    background-color: #262623;
+    box-shadow: var(--sunken);
+    color: var(--ink);
   }
 
-  .tile--lg {
-    width: 38px;
-    height: 38px;
+  .slot--lg {
+    width: 42px;
+    height: 42px;
   }
 
-  /* ---------- Buttons ---------- */
+  .slot--sm {
+    width: 26px;
+    height: 26px;
+  }
+
+  /* An empty slot is darker than a filled one — that contrast is how
+     an inventory shows you what it is missing. */
+  .slot--empty {
+    background-color: #1e1e1c;
+    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.8);
+  }
+
+  /* Filled slot: the item's own colour glows out of the recess. */
+  .slot--filled {
+    background-image: radial-gradient(
+      circle at 50% 42%,
+      var(--slot-tint, var(--orange)) 0%,
+      transparent 72%
+    );
+    color: var(--slot-ink, #fff);
+  }
+
+  a:hover > .slot,
+  .slot-host:hover .slot {
+    border-color: var(--orange);
+  }
+
+  /* ---------- Buttons ----------
+     Factorio buttons are stamped and they press in. The :active
+     state inverts the bevel and drops the button 2px, because a
+     control that doesn't move doesn't feel mechanical. */
 
   .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 7px;
+    gap: 8px;
     min-height: 40px;
-    padding: 9px 18px;
+    padding: 8px 18px;
     border-radius: var(--radius-sm);
-    border: 1px solid transparent;
+    border: 1px solid var(--edge);
     font-family: var(--font-sans);
     font-size: 14px;
     font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
     cursor: pointer;
-    transition: background 140ms ease, border-color 140ms ease,
-      color 140ms ease, box-shadow 140ms ease;
+    transform: translateY(0);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.3), 0 3px 0 rgba(0, 0, 0, 0.45);
+    transition: background 120ms ease, transform 60ms ease,
+      box-shadow 60ms ease, color 120ms ease;
+  }
+
+  .btn:active {
+    transform: translateY(3px);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
   }
 
   .btn--primary {
-    background: var(--primary);
-    color: #fff;
+    background: linear-gradient(180deg, #ffb04a, var(--orange));
+    color: #241703;
   }
 
   .btn--primary:hover {
-    background: var(--primary-dark);
+    background: linear-gradient(180deg, #ffc06b, #ffab3f);
+  }
+
+  .btn--confirm {
+    background: linear-gradient(180deg, #5aa544, #478435);
+    color: #f2f7ef;
+  }
+
+  .btn--confirm:hover {
+    background: linear-gradient(180deg, #66b64e, #4f923b);
   }
 
   .btn--neutral {
-    background: var(--panel);
+    background: linear-gradient(180deg, var(--raised), #3d3d37);
     color: var(--ink);
-    border-color: var(--line);
-    box-shadow: var(--shadow-sm);
   }
 
   .btn--neutral:hover {
-    background: var(--panel-alt);
-    border-color: #b9c2d6;
-  }
-
-  .btn--ghost-light {
-    background: transparent;
-    color: #fff;
-    border-color: rgba(255, 255, 255, 0.28);
-  }
-
-  .btn--ghost-light:hover {
-    background: rgba(255, 255, 255, 0.09);
+    background: linear-gradient(180deg, #56564e, #47473f);
   }
 
   .btn--sm {
-    min-height: 33px;
-    padding: 6px 14px;
-    font-size: 13px;
+    min-height: 32px;
+    padding: 5px 13px;
+    font-size: 12.5px;
   }
 
   .btn:disabled {
-    opacity: 0.55;
+    opacity: 0.5;
     cursor: not-allowed;
+    transform: none;
   }
 
-  /* ---------- The Path ----------
-     Signature element. Chevron stages, exactly the shape a
-     Salesforce user reads as "where this record actually is".
-     Stacks to a plain vertical list below `sm` rather than
-     shipping a horizontal scroller. */
+  /* ---------- The Line ----------
+     Signature element. Machines connected by belts that run, with
+     the whole thesis carried by one difference: on the current
+     stack the belt is stopped and the items are backed up behind a
+     stage nobody owns. Every Factorio player reads a jam instantly,
+     and so does every revenue leader — same picture, same problem.
 
-  .path {
+     Vertical below `sm`; the belt gradient and travel axis swap
+     rather than shipping a horizontal scroller. */
+
+  .line {
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    align-items: flex-start;
   }
 
-  .path__stage {
-    position: relative;
+  /* Each machine and the belt leaving it are one list item for screen
+     readers, but must be siblings for the flex layout. */
+  .line__seg {
+    display: contents;
+  }
+
+  .line__node {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 10px 14px;
-    background: var(--panel-alt);
-    border: 1px solid var(--line);
-    border-radius: var(--radius-sm);
-    color: var(--muted);
+    gap: 10px;
+  }
+
+  .line__name {
     font-family: var(--font-mono);
-    font-size: 11px;
+    font-size: 10.5px;
     font-weight: 500;
-    letter-spacing: 0.07em;
+    letter-spacing: 0.09em;
     text-transform: uppercase;
-  }
-
-  .path__stage--done {
-    background: var(--primary);
-    border-color: var(--primary);
-    color: #fff;
-  }
-
-  .path__stage--stalled {
-    background: var(--amber);
-    border-color: var(--amber);
-    color: #fff;
-  }
-
-  @media (min-width: 640px) {
-    .path {
-      flex-direction: row;
-      gap: 2px;
-    }
-
-    .path__stage {
-      flex: 1 1 0;
-      min-width: 0;
-      justify-content: center;
-      padding: 12px 6px 12px 16px;
-      border: 0;
-      border-radius: 0;
-      clip-path: polygon(
-        0 0,
-        calc(100% - 11px) 0,
-        100% 50%,
-        calc(100% - 11px) 100%,
-        0 100%,
-        11px 50%
-      );
-    }
-
-    .path__stage:first-child {
-      border-radius: var(--radius-sm) 0 0 var(--radius-sm);
-      clip-path: polygon(
-        0 0,
-        calc(100% - 11px) 0,
-        100% 50%,
-        calc(100% - 11px) 100%,
-        0 100%
-      );
-    }
-
-    .path__stage:last-child {
-      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 11px 50%);
-    }
-  }
-
-  .path__label {
-    overflow: hidden;
-    text-overflow: ellipsis;
+    color: var(--muted);
     white-space: nowrap;
   }
 
-  /* ---------- Field rows ----------
-     The record-detail read view: mono label, plain value. */
-
-  .field-row {
-    padding: 14px 0;
-    border-bottom: 1px solid var(--line-soft);
+  .machine {
+    position: relative;
+    width: 42px;
+    height: 42px;
   }
 
-  .field-row:last-child {
-    border-bottom: 0;
+  .machine__ring {
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--state, var(--faint));
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5), 0 0 9px -1px var(--state-glow, transparent);
+    pointer-events: none;
   }
 
-  .field-row__value {
-    margin: 5px 0 0;
-    color: var(--ink);
-    font-size: 15px;
+  /* Status lamp, top-right of the housing — Factorio's alert dot. */
+  .machine__lamp {
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    border: 1px solid rgba(0, 0, 0, 0.6);
+    background: var(--state, var(--faint));
+  }
+
+  .machine__lamp--fault {
+    animation: fault-blink 1.1s steps(1, end) infinite;
+  }
+
+  /* The belt itself: rails top and bottom, a moving tread lane
+     between them. `--dir` flips travel for the vertical layout. */
+  .belt {
+    position: relative;
+    overflow: hidden;
+    flex: none;
+    width: 28px;
+    height: 34px;
+    margin-left: 7px;
+    background: #3b372d;
+    border-left: 1px solid #4b4638;
+    border-right: 1px solid #201e18;
+  }
+
+  .belt__lane {
+    position: absolute;
+    inset: 0 4px;
+    background-color: var(--belt-dark);
+    background-image: repeating-linear-gradient(
+      165deg,
+      var(--belt) 0 7px,
+      #b98d1f 7px 10px,
+      #7d6314 10px 12px,
+      var(--belt) 12px 19px
+    );
+    background-size: auto 19px;
+    animation: belt-run-v 620ms linear infinite;
+  }
+
+  .belt--stopped .belt__lane {
+    animation: none;
+    filter: saturate(0.45) brightness(0.72);
+  }
+
+  /* Cargo riding the belt. Static and bunched when the line is
+     stopped — that pile-up is the argument.
+
+     Travel animates `top`/`left` rather than a transform: the belt
+     is a flex child of unknown width, so only a percentage offset
+     against the container spans it at every viewport. */
+  .cargo {
+    position: absolute;
+    left: 50%;
+    width: 13px;
+    height: 13px;
+    margin-left: -6.5px;
+    border-radius: 1px;
+    border: 1px solid rgba(0, 0, 0, 0.65);
+    background: var(--cargo, var(--logistic));
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  }
+
+  /* Held cargo: a jam, positioned by the component. */
+  .cargo--held {
+    top: var(--pos);
+  }
+
+  .belt--running .cargo {
+    animation: cargo-run-v 620ms linear infinite;
+  }
+
+  @media (min-width: 700px) {
+    .line {
+      flex-direction: row;
+      align-items: flex-start;
+      width: 100%;
+    }
+
+    .line__node {
+      flex-direction: column;
+      gap: 7px;
+      width: 62px;
+    }
+
+    .line__name {
+      font-size: 9.5px;
+      letter-spacing: 0.06em;
+    }
+
+    .belt {
+      flex: 1 1 0;
+      width: auto;
+      height: 28px;
+      margin-left: 0;
+      /* Centre the belt on the 42px housing, not on the caption. */
+      margin-top: 7px;
+      border-left: 0;
+      border-right: 0;
+      border-top: 1px solid #4b4638;
+      border-bottom: 1px solid #201e18;
+    }
+
+    .belt__lane {
+      inset: 4px 0;
+      background-image: repeating-linear-gradient(
+        75deg,
+        var(--belt) 0 7px,
+        #b98d1f 7px 10px,
+        #7d6314 10px 12px,
+        var(--belt) 12px 19px
+      );
+      background-size: 19px auto;
+      animation: belt-run-h 620ms linear infinite;
+    }
+
+    .cargo {
+      top: 50%;
+      left: auto;
+      margin-left: 0;
+      margin-top: -6.5px;
+    }
+
+    .cargo--held {
+      top: 50%;
+      left: var(--pos);
+    }
+
+    .belt--running .cargo {
+      animation: cargo-run-h 620ms linear infinite;
+    }
+  }
+
+  /* ---------- Throughput readout ----------
+     A bar of cells rather than a fabricated number. It says
+     "blocked" or "running", which is all the lifecycle claims. */
+
+  .meter {
+    display: flex;
+    gap: 2px;
+  }
+
+  .meter__cell {
+    width: 9px;
+    height: 12px;
+    border-radius: 1px;
+    background: #211f1c;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.6);
+  }
+
+  .meter__cell--on {
+    background: var(--meter, var(--running));
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  }
+
+  /* ---------- Recipe strip ----------
+     Inputs → output, exactly as a Factorio machine states what it
+     consumes. Used for the service layers, where the dependency
+     between them is genuinely an ingredient list. */
+
+  .recipe {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 12px;
+    background: #262623;
+    border-top: 1px solid var(--edge);
+    border-bottom: 1px solid var(--edge);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.45);
+  }
+
+  .recipe__arrow {
+    color: var(--faint);
+    flex: none;
+  }
+
+  /* ---------- Tooltip ----------
+     Factorio's item tooltip: a title bar, a hairline, and the
+     description. Carries the dictionary entry. */
+
+  .tooltip {
+    background: #2b2b27;
+    border: 1px solid var(--edge);
+    border-radius: var(--radius);
+    box-shadow: inset 0 1px 0 var(--bevel-hi), var(--shadow);
+  }
+
+  .tooltip__head {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 11px 13px;
+    border-bottom: 1px solid var(--edge);
+    box-shadow: 0 1px 0 var(--bevel-hi);
+  }
+
+  /* ---------- Hazard stripe ----------
+     Used once, on the edge of the contact band. Painted on a floor
+     it means "stand back"; used twice on a page it means nothing. */
+
+  .hazard {
+    height: 9px;
+    background: repeating-linear-gradient(
+      -45deg,
+      #e8b22c 0 14px,
+      #1c1c19 14px 28px
+    );
+    border-top: 1px solid var(--edge);
+    border-bottom: 1px solid var(--edge);
   }
 
   /* ---------- Forms ---------- */
@@ -444,19 +629,20 @@
   .input {
     width: 100%;
     padding: 9px 11px;
-    background: var(--panel);
-    border: 1px solid #b9c2d6;
+    background: #232321;
+    border: 1px solid var(--edge);
     border-radius: var(--radius-sm);
     color: var(--ink);
     font-family: inherit;
-    font-size: 14px;
-    transition: border-color 140ms ease, box-shadow 140ms ease;
+    font-size: 14.5px;
+    box-shadow: var(--sunken);
+    transition: border-color 130ms ease, box-shadow 130ms ease;
   }
 
   .input:focus {
     outline: none;
-    border-color: var(--primary);
-    box-shadow: 0 0 0 1px var(--primary);
+    border-color: var(--orange);
+    box-shadow: var(--sunken), 0 0 0 1px var(--orange);
   }
 
   .input::placeholder {
@@ -465,24 +651,25 @@
 
   /* ---------- Misc ---------- */
 
-  .pill {
+  .chip {
     display: inline-flex;
     align-items: center;
     gap: 6px;
     padding: 3px 9px;
-    border-radius: 999px;
-    border: 1px solid var(--line);
-    background: var(--panel);
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--edge);
+    background: #292926;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
     font-family: var(--font-mono);
     font-size: 10.5px;
     font-weight: 500;
-    letter-spacing: 0.07em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--muted);
   }
 
   .link {
-    color: var(--primary);
+    color: var(--orange);
     text-decoration: none;
   }
 
@@ -491,21 +678,23 @@
     text-underline-offset: 3px;
   }
 
-  .band--chrome .link {
-    color: #9aa0ff;
+  .rule {
+    height: 1px;
+    background: var(--edge);
+    box-shadow: 0 1px 0 var(--bevel-hi);
   }
 
-  /* Faint engineering grid, like a canvas behind a record page. */
-  .grid-field {
+  /* Faint plate grid behind the hero — the factory floor tiling. */
+  .floor {
     position: absolute;
     inset: 0;
-    background-image: linear-gradient(var(--line-soft) 1px, transparent 1px),
-      linear-gradient(90deg, var(--line-soft) 1px, transparent 1px);
-    background-size: 56px 56px;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+    background-size: 48px 48px;
     mask-image: radial-gradient(
-      ellipse 90% 70% at 70% 30%,
+      ellipse 85% 75% at 60% 32%,
       #000 0%,
-      transparent 75%
+      transparent 72%
     );
     pointer-events: none;
   }
@@ -513,10 +702,51 @@
 
 /* ---------- Motion ---------- */
 
+@keyframes belt-run-h {
+  to {
+    background-position: 19px 0;
+  }
+}
+
+@keyframes belt-run-v {
+  to {
+    background-position: 0 19px;
+  }
+}
+
+@keyframes cargo-run-h {
+  from {
+    left: -14px;
+  }
+  to {
+    left: 100%;
+  }
+}
+
+@keyframes cargo-run-v {
+  from {
+    top: -14px;
+  }
+  to {
+    top: 100%;
+  }
+}
+
+@keyframes fault-blink {
+  0%,
+  55% {
+    opacity: 1;
+  }
+  56%,
+  100% {
+    opacity: 0.22;
+  }
+}
+
 @keyframes lift {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(9px);
   }
   to {
     opacity: 1;
@@ -526,7 +756,7 @@
 
 @layer components {
   .lift {
-    animation: lift 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation: lift 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 
   .s1 { animation-delay: 0.06s; }
@@ -543,5 +773,20 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
+  }
+
+  /* With motion off, the running line still has to read as running:
+     park the cargo mid-belt rather than letting it collapse to the
+     start edge, so it stays distinguishable from the jam. */
+  .belt--running .cargo {
+    animation: none !important;
+    top: 42%;
+  }
+
+  @media (min-width: 700px) {
+    .belt--running .cargo {
+      top: 50%;
+      left: 42%;
+    }
   }
 }

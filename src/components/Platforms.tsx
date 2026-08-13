@@ -1,12 +1,14 @@
 import { platforms } from '@/content/site'
-import { Tile } from './Panel'
+import { Slot } from './Plate'
 
+/**
+ * The toolbelt, as an inventory row. Six slots, filled — the count is the
+ * argument the section is making, so the grid is deliberately not padded
+ * out with empty slots to look fuller.
+ */
 export default function Platforms() {
   return (
-    <section
-      id="platforms"
-      className="band band--alt border-y border-[var(--line)]"
-    >
+    <section id="platforms" className="band band--well">
       <div className="shell">
         <div className="grid gap-8 lg:grid-cols-[1fr_1fr] lg:items-end">
           <div>
@@ -23,13 +25,13 @@ export default function Platforms() {
           </p>
         </div>
 
-        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {platforms.map((platform) => (
             <div
               key={platform.name}
-              className="panel flex items-start gap-3.5 p-4 transition-shadow hover:shadow-[var(--shadow)]"
+              className="plate slot-host flex items-start gap-3.5 p-4"
             >
-              <Tile glyph={platform.glyph} color={platform.color} size={34} />
+              <Slot glyph={platform.glyph} color={platform.color} size="lg" />
               <div className="min-w-0">
                 <h3 className="display display-md">{platform.name}</h3>
                 <p className="mt-1.5 text-[13.5px] leading-snug text-[var(--muted)]">
